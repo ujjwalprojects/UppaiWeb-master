@@ -1,0 +1,76 @@
+﻿@model UppaiWeb.Models.UserRegisterVM
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                User Management
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/account/userlist" class="btn btn-danger">User List</a></div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-users-cog"></i> User Management <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>User Register</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        @using (Html.BeginForm("Register", "user", new { @area = "" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="col-md-12 mb-3">
+                <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Profile Name</label>&nbsp;&nbsp;<i class="fas fa-fw fa-question-circle" title="Partner Name or Delivery Agent Name"></i>
+                        @Html.TextBoxFor(m => m.RegisterModel.ProfileName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Profile Name" })
+                        @Html.ValidationMessageFor(m => m.RegisterModel.ProfileName)
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">User Name/ Email</label>&nbsp;&nbsp;<i class="fas fa-fw fa-question-circle" title="User Name (It is contain Email ID)"></i>
+                        @Html.TextBoxFor(m => m.RegisterModel.Email, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter User Name" })
+                        @Html.ValidationMessageFor(m => m.RegisterModel.Email)
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Contact Number</label>&nbsp;&nbsp;<i class="fas fa-fw fa-question-circle" title="Contact Number (It is only contain number)"></i>
+                        @Html.TextBoxFor(m => m.RegisterModel.PhoneNumber, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Contact Number" })
+                        @Html.ValidationMessageFor(m => m.RegisterModel.PhoneNumber)
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Role Name</label>&nbsp;&nbsp;<i class="fas fa-fw fa-question-circle" title="User Role Name"></i>
+                        @*@Html.TextBoxFor(m => m.RegisterModel.RoleName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Select User Role" })*@
+                        @Html.DropDownListFor(m => m.RegisterModel.RoleName, new SelectList(Model.RoleDDList,"RoleName", "RoleName"), "----Select User Role----", new { @class = "form-control", @placeholder = "Select User Role" })
+                        @Html.ValidationMessageFor(m => m.RegisterModel.RoleName)
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="action-div action-style">
+                <a href="/user/userlist" class="btn btn-secondary btn-user">Back To List</a>
+                <button type="submit" class="btn btn-success btn-user float-right">Save</button>
+                <div class="clearfix"></div>
+            </div>
+        }
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

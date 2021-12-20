@@ -1,0 +1,60 @@
+﻿@model UppaiWeb.ViewModels.utblPaymentTran
+
+<!-- // Click this button automatically when this page load using javascript -->
+<!-- You can hide this button -->
+<button id="rzp-button1" hidden>Pay</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_mG2hLdgNv5THmp", // Enter the Key ID generated from the Dashboard
+    "amount": "@Html.DisplayFor(model => model.PaymentAmt)", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "@Html.DisplayFor(model => model.Currency)",
+    "name": "@Html.DisplayFor(model => model.MerchantName)",
+    "order_id": "@Html.DisplayFor(model => model.RPayOrderID)",
+    "handler": function (response) {
+        console.log(response);
+        // After payment successfully made response will come here
+        // Set the data in hidden form
+        document.getElementById('rzp_paymentid').value = response.razorpay_payment_id;
+        document.getElementById('rzp_orderid').value = response.razorpay_order_id;
+
+        // // Let's submit the form automatically
+        document.getElementById('rzp-paymentresponse').click();
+    },
+    @*"prefill": {
+        "name": "@Html.DisplayFor(model => model.name)",
+        "email": "@Html.DisplayFor(model => model.email)",
+        "contact": "@Html.DisplayFor(model => model.contactNumber)"
+    },
+    "notes": {
+        "address": "@Html.DisplayFor(model => model.address)"
+    },*@
+    "theme": {
+        "color": "#00FFFB"
+    }
+};
+var rzp1 = new Razorpay(options);
+
+//<!-- onload function -->
+window.onload = function(){
+    document.getElementById('rzp-button1').click();
+};
+
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+<!-- This form is hidden, and submit when payment successfully made -->
+@using (Html.BeginForm("Complete", "customer"))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Hidden("rzp_paymentid")
+    @Html.Hidden("rzp_orderid")
+    <button type="submit" id="rzp-paymentresponse" class="btn btn-primary" hidden>Submit</button>
+}
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>

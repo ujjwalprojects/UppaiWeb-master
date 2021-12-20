@@ -1,0 +1,262 @@
+﻿@model UppaiWeb.Areas.MasterConfig.Models.AddBanner
+@{
+    ViewBag.Title = "Add Banner";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/cropper/cropper.min.css" rel="stylesheet" />
+
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Web Content Management
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/masterconfig/webcontent/bannerlist" class="btn btn-danger"> <i class="fa fa-th-list"></i> Banner List</a></div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-globe"></i> Web Content <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>Banner</small><small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>Add Banner</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        @using (Html.BeginForm("AddBanner", "webcontent", new { @area = "masterconfig" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="col-md-12 mb-3">
+                <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="control-label required">Banner Title</label>
+                        @Html.TextBoxFor(m => m.BannerDetail.BannerTitle, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Banner Title" })
+                        @Html.ValidationMessageFor(m => m.BannerDetail.BannerTitle)
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Description</label>
+                        @Html.TextAreaFor(m => m.BannerDetail.BannerDesc, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter BannerDesc" })
+                        @Html.ValidationMessageFor(m => m.BannerDetail.BannerDesc)
+                    </div>
+                    <div class="col-md-8 offset-md-2 text-center">
+                        <div class="form-group text-center">
+                            <div class="thumbnail">
+                                <div id="imgPhotoThumb">
+                                    <img src="~/Content/Image/no-thumb.png" class="img-fluid" />
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#photo-modal">
+                                    Upload Banner
+                                </button>
+                            </div>
+                            @Html.TextAreaFor(m => m.BannerDetail.BannerThumbnail, new { @class = "d-none", @id = "PhotoThumb" })
+                            @Html.TextAreaFor(m => m.BannerDetail.BannerNormal, new { @class = "d-none", @id = "PhotoNormal" })
+                            @Html.ValidationMessageFor(m => m.BannerDetail.BannerNormal)
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        @Html.CheckBoxFor(m => m.BannerDetail.IsPublished, new { id = "chkpublish" }) Please check, If you want to Published.
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="action-div action-style">
+                <a href="/masterconfig/webcontent/bannerlist" class="btn btn-secondary btn-user">Back To List</a>
+                <button type="submit" class="btn btn-success btn-user float-right"><i class="fa fa-save"></i> Save</button>
+                <div class="clearfix"></div>
+            </div>
+        }
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+<div class="modal fade" id="photo-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choose Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="avatar-form" action="#" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="avatar-body row m-0">
+                        <div class="col-md-8" style="padding: 0">
+                            <div class="well well-sm well-table-header clearfix">
+                                <div class="img-container">
+                                    <img src="#" class="rounded-circle">
+                                    <span id="ImageSpan" style="font-size: 12pt; font-weight: bold; ">Choose photo...</span>
+                                </div>
+                            </div>
+                            <div class="well well-sm well-table-header clearfix">
+                                <div class="col-md-12 col-sm-12" style="padding: 0">
+                                    <div class="btn btn-sm btn-primary" for="inputImage" title="Upload image file">
+                                        <input id="inputImage" class="" name="file" type="file" accept="image/*" data-toggle="tooltip" title="Upload image" onchange="ShowFileMsg()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="padding-right: 0">
+                            <div class="well well-sm well-table-header" style="text-align:center; height:185px; width:161px;">
+                                <span style="font-size: 13pt; font-weight: bold;">Preview</span>
+                                <div id="dataURLView" style="margin-left: auto; margin-right: auto; width: 126px;">
+                                    <img src="~/Content/Image/no-thumb.png" class="rounded-circle" style="width: 126px; height: 126px;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="well well-sm clearfix">
+                        <div class="col-md-12 col-sm-12 text-right" style="padding-right: 0">
+                            <button class="btn btn-danger" id="getDataURL" data-toggle="tooltip" type="button" title="Crop Image" style="pointer-events: none; opacity: .3">Crop Image</button>
+                            <button class="btn btn-primary" data-dismiss="modal" type="button" id="DoneBtn">Done</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/cropper/cropper.min.js"></script>
+    <script type="text/javascript">
+        function ShowFileMsg() {
+            if ($('#inputImage').val() == "") {
+                $("#ImageSpan").text("Upload photo...");
+                $('#getDataURL').css("pointer-events", "none");
+                $('#getDataURL').css("opacity:", ".3");
+            }
+            else {
+                $("#ImageSpan").text("");
+                $('#getDataURL').css("pointer-events", "");
+                $('#getDataURL').css("opacity", "1");
+            }
+
+            if ($('#dataURLInto').val() == "") {
+                $('#ModelDone').css("pointer-events", "none");
+                $('#ModelDone').css("opacity:", ".3");
+            }
+            else {
+                $('#ModelDone').css("pointer-events", "");
+                $('#ModelDone').css("opacity", "1");
+            }
+        }
+        $(function () {
+            (function () {
+
+                var $image = $('.img-container img');
+                var $download = $('#download');
+                var $dataX = $('#dataX');
+                var $dataY = $('#dataY');
+                var $dataHeight = $('#dataHeight');
+                var $dataWidth = $('#dataWidth');
+                var $dataRotate = $('#dataRotate');
+                var $dataScaleX = $('#dataScaleX');
+                var $dataScaleY = $('#dataScaleY');
+                var options = {
+                    aspectRatio: 96 / 41,
+                    preview: '.cropper-preview',
+                    crop: function (e) {
+                        $dataX.val(Math.round(e.x));
+                        $dataY.val(Math.round(e.y));
+                        $dataHeight.val(Math.round(e.height));
+                        $dataWidth.val(Math.round(e.width));
+                        $dataRotate.val(e.rotate);
+                        $dataScaleX.val(e.scaleX);
+                        $dataScaleY.val(e.scaleY);
+                    }
+                };
+
+                // Cropper
+                $image.on({
+                    'build.cropper': function (e) {
+                        console.log(e.type);
+                    },
+                    'built.cropper': function (e) {
+                        console.log(e.type);
+                    },
+                    'cropstart.cropper': function (e) {
+                        console.log(e.type, e.action);
+                    },
+                    'cropmove.cropper': function (e) {
+                        console.log(e.type, e.action);
+                    },
+                    'cropend.cropper': function (e) {
+                        console.log(e.type, e.action);
+                    },
+                    'crop.cropper': function (e) {
+                        console.log(e.type, e.x, e.y, e.width, e.height, e.rotate, e.scaleX, e.scaleY);
+                    },
+                    'zoom.cropper': function (e) {
+                        console.log(e.type, e.ratio);
+                    }
+                }).cropper(options);
+
+                // Import image
+                var $inputImage = $('#inputImage');
+                var URL = window.URL || window.webkitURL;
+                var blobURL;
+
+                if (URL) {
+                    $inputImage.change(function () {
+                        var files = this.files;
+                        var file;
+
+                        if (!$image.data('cropper')) {
+                            return;
+                        }
+
+                        if (files && files.length) {
+                            file = files[0];
+
+                            if (/^image\/\w+$/.test(file.type)) {
+                                blobURL = URL.createObjectURL(file);
+                                $image.one('built.cropper', function () {
+
+                                    // Revoke when load complete
+                                    URL.revokeObjectURL(blobURL);
+                                }).cropper('reset').cropper('replace', blobURL);
+                                $inputImage.val('');
+                            } else {
+                                window.alert('Please choose an image file.');
+                            }
+                        }
+                    });
+                } else {
+                    $inputImage.prop('disabled', true).parent().addClass('disabled');
+                }
+
+                $("#getDataURL").click(function () {
+                    var dataURLNormal = $image.cropper("getDataURL", {
+                        width: 1920,
+                        height: 820
+                    }, "image/jpeg", 0.8);
+
+                    var dataURLThumb = $image.cropper("getDataURL", {
+                        width: 384,
+                        height: 164
+                    }, "image/jpeg", 0.8);
+
+                    $(PhotoNormal).text(dataURLNormal);
+                    $(PhotoThumb).text(dataURLThumb);
+                    $(imgPhotoThumb).html('<img class="img-fluid" style="width:100%;" src="' + dataURLThumb + '">');
+                    $('#photo-modal').modal('hide');
+                });
+            }());
+        });
+        function inputImage() {
+        }
+    </script>
+
+}
+

@@ -1,0 +1,177 @@
+﻿@model UppaiWeb.Areas.General.Models.OrderAssignVM
+@{
+    ViewBag.Title = "Order Assign";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    decimal TotalPartner = 0;
+    TotalPartner = @Model.OrderManage.NetAmt + @Model.OrderManage.TaxAmt;
+}
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Order Manage
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/general/ordermanage/ordermanagelist" class="btn btn-danger"> <i class="fa fa-edit"></i>  Order Assign</a></div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-toilet-paper"></i> Order Manage <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>Order Acknowledge/View</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        <div class="alert alert-light">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="alert alert-light">
+                        <h3 class="text-center">Order Assign Details</h3>
+                        @if (Model.OrderManage.LatestStatus != "Order Delivered")
+                        {
+                            <form action="/general/ordermanage/OrderAssign" method="post">
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.OrderID)
+                                @if (Model.OrderAssign != null)
+                                {
+                                    @Html.HiddenFor(m => m.OrderAssign.AssignID)
+                                }
+                                <div class="col-md-12 mt-3">
+                                    <div class="row">
+                                        <div class="form-group col-md-12 mt-2">
+                                            @*<strong class="control-label required">Assign To: </strong>*@<br />
+                                            <label class="control-label required">Assign To</label>
+                                            @Html.DropDownListFor(m => m.OrderAssign.DeliveryAgentID, new SelectList(Model.DeliveryAgentDDList, "DeliveryAgentID", "RiderName"), "----Select Delivery Rider----", new { @class = "form-control", @placeholder = "Select Delivery Rider" })
+                                            @Html.ValidationMessageFor(m => m.OrderAssign.DeliveryAgentID)
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <button type="submit" class="btn btn-success btn-sm float-right"> Assign Rider</button>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="col-md-12 mt-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="control-label">Assign To: <strong>@Model.OrderManage.AssignTo</strong> </label>
+                                    </div>
+                                    <div class="col-md-12 text-right">
+                                        <label class="control-label">Assign Date &amp; Time: <strong> @Model.OrderAssign.AssignDateTime.ToString("dd MMM yyyy hh:mm")</strong> </label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                <div class="col-md-7 border-left-dark">
+                    <h3 class="text-center">Order Details</h3>
+                    <div class="col-md-12 mt-3">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label class="control-label">Order#: <strong>@Model.OrderManage.OrderID</strong> </label>
+                            </div>
+                            <div class="col-md-7 text-right">
+                                <label class="control-label">Status: <strong class="badge badge-warning"> @Model.OrderManage.LatestStatus</strong> </label>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="control-label">Date: <strong>@Model.OrderManage.OrderDate.ToString("dd MMM yyyy hh:mm")</strong></label>
+                            </div>
+
+                            <div class="col-md-7 text-right">
+                                <label class="control-label">Order From: <strong>@Model.OrderManage.PartnerName</strong></label>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="control-label">Total Amount: <strong><i class="fa fa-rupee"></i> @Model.OrderManage.TotalAmt.ToString("0.00")</strong></label>
+                            </div>
+                            <div class="col-md-7 text-right">
+                                <label class="control-label">
+                                    Order Type:
+                                    <strong>
+                                        @(Model.OrderManage.OrderSchedule == null ? "Delivery Now" : "Advance Order")
+                                        @if (Model.OrderManage.OrderSchedule != null)
+                                        {
+                                            <span> On @Model.OrderManage.OrderSchedule.Value.ToString("dd MMM yyyy hh:mm")</span>
+                                        }
+                                    </strong>
+                                </label>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="control-label">Deliver To: <strong>@Model.OrderManage.DeliverTo</strong></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <hr />
+        <div class="alert alert-light">
+            <h3 class="text-center">Order Items Details</h3>
+            <div class="col-md-12 mt-3">
+                <div class="table-responsive mb-2">
+                    <table class="table table-striped" width="100%">
+                        <tbody class="fontsize-13">
+                            @if (@Model.OrderItems != null)
+                            {
+                                foreach (var item in @Model.OrderItems)
+                                {
+                                    <tr>
+                                        <td class="text-left" style="vertical-align:middle;">@item.MenuName</td>
+                                        <td class="text-center" style="vertical-align:middle;"><i class="fa fa-rupee"></i> @item.Price.ToString("0.00")</td>
+                                        <td class="text-center" style="vertical-align:middle;">@item.Qty</td>
+                                        <td class="text-right" style="vertical-align:middle;"><i class="fa fa-rupee"></i> @item.TotalAmt.ToString("0.00")</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Sub Total:</b></td>
+                                    <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderManage.NetAmt.ToString("0.00")</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Tax Amount:</b></td>
+                                    <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderManage.TaxAmt.ToString("0.00")</b></td>
+                                </tr>
+                                if (User.IsInRole("Partner"))
+                                {
+                                    <tr>
+                                        <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Grand Total:</b></td>
+                                        <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @TotalPartner.ToString("0.00")</b></td>
+                                    </tr>
+
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Delivery Fee:</b></td>
+                                        <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderManage.DeliveryFee.ToString("0.00")</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Grand Total:</b></td>
+                                        <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderManage.TotalAmt.ToString("0.00")</b></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

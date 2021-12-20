@@ -1,0 +1,209 @@
+﻿@model UppaiWeb.ViewModels.OrderVM
+@{
+    Layout = "~/Views/Shared/_LayoutGeneral.cshtml";
+}
+<style>
+    .pagination ul {
+        margin: 2em auto;
+        padding-left: 0;
+        list-style-type: none;
+    }
+
+    .page-number {
+        display: inline;
+    }
+
+        .page-number a {
+            text-decoration: none;
+            color: black;
+        }
+
+    /* Pagination 3 */
+    .pagination-3 .page-number {
+        margin: 0.25em;
+    }
+
+        .pagination-3 .page-number a {
+            padding: 0.125em;
+        }
+
+    .pagination-3 .active {
+        padding: 4px 8px;
+        border-radius: 50%;
+        background-color: #46ccd2;
+        color: white;
+    }
+
+        .pagination-3 .active a {
+            color: white;
+        }
+</style>
+<div class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="menu-title">
+                    <h2>Order History</h2>
+                    <ul class="custom_breadcrumb">
+                        <li><a href="/home/index"><i class="fa fa-home"></i> Home</a></li>
+                        @*<li><a href="/home/partnerlist"><i class="fa fa-cutlery"></i> Restaurants</a></li>*@
+                        <li><i class="fas fa-toilet-paper"></i> Order Details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="customcard pb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="mt-2 pb-0">Order Details</h2>
+                        </div>
+                    </div>
+                    <hr class="mb-2" />
+                    <div class=" row">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <input type="text" name="SearchTerm" id="inputsearch" class="form-control" autocomplete="off" placeholder="Search By Restaurant Name or Order ID..." />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning pull-left" type="submit" id="search" value="Search">
+                                        <i class="fa fa-search"> </i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p id="demo" class="ml-4 mt-2"></p>
+                        <div class="col-md-12" id="OrderDtlsView">
+                            @Html.Partial("_pvOrderList", Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="OrderDetails">
+    <div class="modal-dialog ml-xl-auto modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Order Details</h2>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @*<button class="close" data-dismiss="modal" id="btnclosse" style="margin-top:-25px;">&times;</button>*@
+            </div>
+            <div class="modal-body" id="orddtls">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $(document).on('click', '.pageChange', function () {
+                changePage(parseInt($(this).attr('id')))
+            })
+            $(document).on('click', '.previousPage', function () {
+                prevPage(parseInt($(this).attr('id')))
+            })
+            $(document).on('click', '.nextPage', function () {
+                nextPage(parseInt($(this).attr('id')))
+            })
+            function changePage(PageNo) {
+                if (parseInt('@Model.PagingInfo.CurrentPage') != 0 || PageNo != 0) {
+                    $.ajax({
+                        url: '/customer/OrderList',
+                        method: 'GET',
+                        data: { PageNo: PageNo, PageSize: @Model.PagingInfo.ItemsPerPage, SearchTerm: $('#inputsearch').val() },
+                        success: function (data) {
+                            //$('#OrderDtlsView').html(data);
+                            $('#OrderDtlsView').empty().append(data);
+                        }
+                    })
+                }
+            }
+            $('#search').on('click', function () {
+                loadorderlist();
+                var x = '<i> Showing Results for Search Key: <b class="text-warning">"' + document.getElementById("inputsearch").value + '" </b> <a href="/customer/OrderList">&nbsp; <u>Clear Search</u></a></i>';
+                document.getElementById("demo").innerHTML = x;
+            });
+            function loadorderlist() {
+                $.ajax({
+                    url: '/customer/OrderList',
+                    type: 'GET',
+                    data: { SearchTerm: $('#inputsearch').val() },
+                    success: function (data) {
+                        $('#OrderDtlsView').empty().append(data);
+                    }
+                });
+            }
+
+            $(document).on('click', '.viewOrderDtls', function (e) {
+                var OrderID = this.id;
+                //alert(OrderID);
+                $.ajax({
+                    type: 'GET',
+                    url: '/customer/GetOrderDetailsByID',
+                    data: { OrderID: OrderID },
+                    success: function (data) {
+                        $('#orddtls').html(data);
+                        $('#OrderDetails').modal("show");
+                    }
+                });
+            });
+        });
+    </script>
+
+    @*<script type="text/javascript">
+            $(document).ready(function (e) {
+                $('#search').on('click', function () {
+                    var TabActive = $('.BizFilter.active').attr("id");
+                    var BizID = TabActive.split('_');
+                    //alert(BizID[1]);
+                    loadpartnerlist(BizID[1]);
+                    var x = '<i> Showing Results for Search Key: <b class="text-warning">"' + document.getElementById("inputsearch").value + '" </b> <a href="/home/PartnerList">&nbsp; <u>Clear Search</u></a></i>';
+                    document.getElementById("demo").innerHTML = x;
+                });
+
+                //By Default
+                $.ajax({
+                    url: '/Home/GetPartnerByBiz',
+                    type: 'GET',
+                    data: { BizID: 0, SearchTerm: $('#inputsearch').val() },
+                    success: function (data) {
+                        $('#PartnerDtlsView').empty().append(data);
+                    }
+                });
+                var MenuDtls = function () {
+                    var FilterID = $(this).attr("id");
+                    var BizID = FilterID.split('_');
+                    $.ajax({
+                        url: '/Home/GetPartnerByBiz',
+                        type: 'GET',
+                        data: { BizID: BizID[1], SearchTerm: $('#inputsearch').val() },
+                        success: function (data) {
+                            $('#PartnerDtlsView').empty().append(data);
+                        }
+                    });
+                }
+                $(document).on('click', '.BizFilter', MenuDtls);
+                function loadpartnerlist(val) {
+                    $.ajax({
+                        url: '/Home/GetPartnerByBiz',
+                        type: 'GET',
+                        data: { BizID: val, SearchTerm: $('#inputsearch').val() },
+                        success: function (data) {
+                            $('#PartnerDtlsView').empty().append(data);
+                        }
+                    });
+                }
+            });
+        </script>*@
+}

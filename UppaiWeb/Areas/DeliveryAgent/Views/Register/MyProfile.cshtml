@@ -1,0 +1,173 @@
+﻿@model UppaiWeb.Areas.DeliveryAgent.Models.DeliveryAgentEdit
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Profile Manage
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/DeliveryAgent/register/editDeliveryAgent/@Model.DeliveryAgentDetails.Id" class="btn btn-danger"> <i class="fa fa-edit"></i>  Edit Profile</a></div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-user"></i> Profile Manage <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>My Profile </small></h6>
+    </div>
+    <div class="card-body pb-4">
+        <div class="alert alert-secondary">
+            <h2 class="text-center">Delivery Agent INFORMATION</h2>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-10 p-0">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <label class="control-label">Phone No./User Name: <strong>@Model.UserName</strong> </label>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                <label class="control-label required">Type: <strong>@Model.DeliveryAgentDetails.DeliveryType</strong></label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="control-label">Name: <strong>@Model.DeliveryAgentDetails.Name</strong> </label>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                <label class="control-label required">
+                                    Alt. Mobile No.:
+                                    @if (!string.IsNullOrEmpty(@Model.DeliveryAgentDetails.AlternateMobileNo))
+                                    {
+                                        <strong>@Model.DeliveryAgentDetails.AlternateMobileNo</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>N/A</strong>
+                                    }
+                                </label>
+                            </div>
+                            <div class="col-md-7">
+                                <label class="control-label">Role Name: <strong>@Model.RoleName</strong> </label>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                <label class="control-label required">
+                                    Email ID:
+                                    @if (!string.IsNullOrEmpty(@Model.DeliveryAgentDetails.EmailID))
+                                    {
+                                        <strong>@Model.DeliveryAgentDetails.EmailID</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>N/A</strong>
+                                    }
+                                </label>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="control-label required">Address: <strong>@Model.DeliveryAgentDetails.Address</strong></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-center p-0">
+                        <div id="imgPhotoThumb" style="margin-left: auto; margin-right: auto;">
+                            @if (Model.DeliveryAgentDetails.ImagesUpload == null || Model.DeliveryAgentDetails.ImagesUpload == "")
+                            {
+                                <img src="~/Content/Image/no-thumb.png" alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 140px; height: 140px; vertical-align: middle" />
+                            }
+                            else
+                            {
+                                <img src="@Model.DeliveryAgentDetails.ImagesUpload " alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 140px; height: 140px; vertical-align: middle" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="alert alert-secondary">
+            <h2 class="text-center">DeliveryAgent BANK DETAILS</h2>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="control-label">
+                            A/C Holder Name:
+                            @if (!string.IsNullOrEmpty(@Model.DeliveryAgentDetails.ACHolderName))
+                            {
+                                <strong>@Model.DeliveryAgentDetails.ACHolderName</strong>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">
+                            Bank Name:
+                            @if (!string.IsNullOrEmpty(@Model.DeliveryAgentDetails.BankName))
+                            {
+                                <strong>@Model.DeliveryAgentDetails.BankName</strong>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </label>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label ">
+                            IFSC Code:
+                            @if (!string.IsNullOrEmpty(@Model.DeliveryAgentDetails.IFSCCode))
+                            {
+                                <strong>@Model.DeliveryAgentDetails.IFSCCode</strong>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">
+                            Account No.:
+                            @if (@Model.DeliveryAgentDetails.AccountNo != null)
+                            {
+                                <strong>@Model.DeliveryAgentDetails.AccountNo</strong>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </label>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label">
+                            Branch Name:
+                            @if (!string.IsNullOrEmpty(@Model.DeliveryAgentDetails.BankBranch))
+                            {
+                                <strong>@Model.DeliveryAgentDetails.BankBranch</strong>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+
+

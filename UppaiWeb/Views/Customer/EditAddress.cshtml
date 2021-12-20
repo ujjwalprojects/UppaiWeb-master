@@ -1,0 +1,278 @@
+﻿@model UppaiWeb.ViewModels.AddressVM
+@{
+    Layout = "~/Views/Shared/_LayoutGeneral.cshtml";
+}
+<link href="~/Content/AdminStyle/Site.css" rel="stylesheet" />
+<link href="~/Content/GeneralStyle/css/MapStyle.css" rel="stylesheet" />
+<div class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="menu-title">
+                    <h2>Delivery Address Details</h2>
+                    <ul class="custom_breadcrumb">
+                        <li><a href="/home/index"><i class="fa fa-home"></i> Home</a></li>
+                        <li><a href="/home/partnerlist"><i class="fa fa-cutlery"></i> Restaurants</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Delivery Address</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="customcard pb-3">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h2 class="mt-2">Edit Delivery Address</h2>
+                        </div>
+                    </div>
+                    <hr class="mb-2" />
+                    <div class="col-md-12">
+                        <div class="row" id="DeliveryAddrDiv">
+                            <div class="col-md-12">
+                                <div id="pac-container">
+                                    <input id="pac-input" type="text" placeholder="Enter New Delivery Address" class="form-control" />
+                                    <p id="demo" class="pull-right mt-1"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-3" id="FormDiv">
+                                <div class="card-borderless">
+                                    <form action="/Customer/editAddress" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @Html.HiddenFor(m => m.AddAddress.FullAddress, new { @id = "h_fullAddr" })
+                                        @Html.HiddenFor(m => m.AddAddress.AddressID)
+                                        @Html.HiddenFor(m => m.AddAddress.LatLngBoth, new { @id = "latlongval" })
+                                        <div class="col-md-12 mb-3">
+                                            <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label required">Full Name</label>
+                                                    @Html.TextBoxFor(m => m.AddAddress.ContactPersonName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Contact Person Name", @id = "fullname" })
+                                                    @Html.ValidationMessageFor(m => m.AddAddress.ContactPersonName)
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label required">Contact Number</label>
+                                                    @Html.TextBoxFor(m => m.AddAddress.ContactNumber, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Contact Number", @id = "contno" })
+                                                    @Html.ValidationMessageFor(m => m.AddAddress.ContactNumber)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="control-label required">Flat, Floor, Building</label>
+                                                    @Html.TextBoxFor(m => m.AddAddress.FlatFloorBuilding, new { @class = "form-control", @autocomplete = "off", @placeholder = "Flat, Floor, Building, Company Details", @id = "floordtls" })
+                                                    @Html.ValidationMessageFor(m => m.AddAddress.FlatFloorBuilding)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="control-label required">Landmark</label>
+                                                    @Html.TextBoxFor(m => m.AddAddress.Landmark, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Landmark", @id = "landmark" })
+                                                    @Html.ValidationMessageFor(m => m.AddAddress.Landmark)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="control-label required">Pin Code</label>
+                                                    @Html.TextBoxFor(m => m.AddAddress.PinNo, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Postal Pin Code", @id = "pinno" })
+                                                    @Html.ValidationMessageFor(m => m.AddAddress.PinNo)
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label class="control-label required">Address</label>
+                                                    @Html.TextAreaFor(m => m.AddAddress.FullAddress, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Delivery Address", @id = "FullAddress", @disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.AddAddress.FullAddress)
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <div class="col-md-12 form-check form-check-inline">
+                                                        @Html.RadioButtonFor(model => model.AddAddress.AddressType, "Home")
+                                                        &nbsp;&nbsp;<label class="form-check-label" for="Home"><i class="fas fa-home"></i> Home </label> &nbsp;&nbsp;
+                                                        @Html.RadioButtonFor(model => model.AddAddress.AddressType, "Office")
+                                                        &nbsp;&nbsp;<label class="form-check-label" for="Office"><i class="fas fa-briefcase"></i> Office </label>&nbsp;&nbsp;
+                                                        @*<input class="form-check-input ml-2" type="radio" name="DeliveryType" id="Others" value="Others" />*@
+                                                        @*<label class="form-check-label" for="Others"><i class="fas fa-address-card"></i> Others </label>*@&nbsp;&nbsp;
+                                                    </div>
+                                                    @Html.ValidationMessageFor(m => m.AddAddress.AddressType)
+                                                </div>
+                                                <hr />
+                                                <div class="col-md-12 mb-2">
+                                                    <button type="submit" class="btn btn-success btn-sm float-right"><i class="fa fa-save"></i> Save</button>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-none" id="MapDiv">
+                                <div id="map" style="height:250px; width:100%;"></div>
+                                <div id="infowindow-content">
+                                    <img src="" width="16" height="16" id="place-icon" />
+                                    <span id="place-name" class="title"></span><br />
+                                    <span id="place-address"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-none mt-4" id="NotAvlDiv">
+                                <div class="text-center">
+                                    <h2><i class="fas fa-3x fa-map-marker-alt"></i></h2>
+                                    <h3>Location is not serviceable</h3>
+                                    <span class="text-muted">Services are not available at this location yet. Please update your location.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZbAIlLlcRXFqYg9JxT0VwJxLe_gjFaIE&callback=initMap&libraries=places&v=weekly" async></script>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script type="text/javascript">
+        var fullAddr = "";
+        var Addr = '@Model.AddAddress' != null ? '@Model.AddAddress.FullAddress' : "";
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 27.3233367, lng: 88.604143 },
+                zoom: 12,
+            });
+            const card = document.getElementById("pac-card");
+            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
+
+            const center = { lat: 27.3233367, lng: 88.604143 };
+            // Create a bounding box with sides ~10km away from the center point
+            const defaultBounds = {
+                north: center.lat + 0.1,
+                south: center.lat - 0.1,
+                east: center.lng + 0.1,
+                west: center.lng - 0.1,
+            };
+            const input = document.getElementById("pac-input");
+            const options = {
+                bounds: defaultBounds,
+                componentRestrictions: { country: "in" },
+                fields: ["address_components", "geometry", "icon", "name"],
+                strictBounds: true,
+                types: ["establishment"],
+            };
+            const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            // Set initial restriction to the greater list of countries.
+            autocomplete.setComponentRestrictions({
+                country: ["in"],
+            });
+
+            const southwest = { lat: 27.5330435, lng: 88.5033336 };
+            const northeast = { lat: 27.5330435, lng: 88.5033336 };
+            const newBounds = new google.maps.LatLngBounds(southwest, northeast);
+
+            autocomplete.setBounds(newBounds);
+
+            const infowindow = new google.maps.InfoWindow();
+            const infowindowContent = document.getElementById("infowindow-content");
+
+            infowindow.setContent(infowindowContent);
+
+            const marker = new google.maps.Marker({
+                map,
+                anchorPoint: new google.maps.Point(0, -29),
+            });
+
+            autocomplete.addListener("place_changed", () => {
+                infowindow.close();
+                marker.setVisible(false);
+
+                const place = autocomplete.getPlace();
+
+                if (!place.geometry || !place.geometry.location) {
+                    // User entered the name of a Place that was not suggested and
+                    // pressed the Enter key, or the Place Details request failed.
+                    $("#NotAvlDiv").removeClass('d-none');
+                    //$("#MapDiv").addClass('d-none');
+                    $("#FormDiv").addClass('d-none');
+                    $('#FullAddress').val();
+                    $('#latlongval').val();
+                    //window.alert("No details available for input: '" + place.name + "'");
+                }
+                else {
+                    fullAddr = $('#pac-input').val();
+                    //$("#MapDiv").removeClass('d-none');
+                    $("#FormDiv").removeClass('d-none');
+                    $('#FullAddress').val(fullAddr);
+                    $("#NotAvlDiv").addClass('d-none');
+                    $('#h_fullAddr').val(fullAddr);
+                    $('#latlongval').val(place.geometry.location);
+                }
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17); // Why 17? Because it looks good.
+                }
+
+                marker.setPosition(place.geometry.location);
+                marker.setVisible(true);
+
+
+                let address = "";
+                if (place.address_components) {
+                    address = [
+                        (place.address_components[0] &&
+                            place.address_components[0].short_name) ||
+                        "",
+                        (place.address_components[1] &&
+                            place.address_components[1].short_name) ||
+                        "",
+                        (place.address_components[2] &&
+                            place.address_components[2].short_name) ||
+                        "",
+                    ].join(" ");
+                }
+                infowindowContent.children["place-icon"].src = place.icon;
+                infowindowContent.children["place-name"].textContent = place.name;
+                infowindowContent.children["place-address"].textContent = address;
+                infowindow.open(map, marker);
+            });
+        }
+
+        $(document).ready(function (e) {
+            var InputOperation = function () {
+                @*if ($('#pac-input').val() != "") {
+                    var x = '<a href="/Customer/EditAddress/'+'@Model.AddAddress.AddressID'+'"><i class="fa fa-remove pull-right"><u>Clear Search</u></i></a>';
+                    document.getElementById("demo").innerHTML = x;
+                }*@
+                clearForm();
+            }
+            var clearForm = function () {
+                $('#fullname').val("");
+                $('#contno').val("");
+                $('#floordtls').val("");
+                $('#landmark').val("");
+                $('#pinno').val("");
+                $('#FullAddress').val("");
+                $('#h_fullAddr').val("");
+                $('#latlongval').val("");
+            }
+            $('#pac-input').on('input', function () { InputOperation() })
+            var showhideForm = function () {
+                if (Addr != "") {
+                    $('#pac-input').val(Addr);
+                    @*if (Addr != "") {
+                        var x = '<a href="/Customer/EditAddress/'+'@Model.AddAddress.AddressID'+'"><i class="fa fa-remove pull-right"><u>Clear Search</u></i></a>';
+                        document.getElementById("demo").innerHTML = x;
+                    }*@
+                    
+                }
+            }
+            showhideForm();
+        });
+
+    </script>
+
+}
+
+
+

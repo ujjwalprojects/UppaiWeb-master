@@ -1,0 +1,93 @@
+﻿@model UppaiWeb.ViewModels.utblOrderDetail
+@{
+    Layout = "~/Views/Shared/_LayoutGeneral.cshtml";
+}
+<link href="~/Content/AdminStyle/Site.css" rel="stylesheet" />
+<div class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="menu-title">
+                    <h2>Check Out Details</h2>
+                    <ul class="custom_breadcrumb">
+                        <li><a href="/home/index"><i class="fa fa-home"></i> Home</a></li>
+                        <li><a href="@Url.Action("checkout","customer",new { Area="",OrdID=@Model.OrderID})"><i class="fas fa-shopping-basket"></i> Check Out</a></li>
+                        <li><i class="fas fa-rupee-sign"></i> Payment Mode</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="customcard pb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="mt-2 pb-0">Payment Mode</h2>
+                        </div>
+                    </div>
+                    <hr class="mb-2" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="/Customer/PaymentMode" method="post">
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.OrderID)
+                                @Html.Hidden("OrdID", (string)@Model.OrderID)
+                                @Html.Hidden("OrdType", (string)@Model.OrderType)
+                                <div class="col-md-12 mt-2">
+                                    <div class="row">
+                                        <div class="col-md-4 text-left">
+                                            <span>Order #:</span><strong> @Model.OrderID</strong>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <span>Date:</span><strong> @Model.OrderDate.ToString("dd MMM yyyy")</strong>
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                            <span>Order Amount:</span><strong><i class="fa fa-rupee"></i> @Model.TotalAmt.ToString("0.00")</strong>
+                                        </div>
+                                        <div class="form-group col-md-12 mt-2">
+                                            <strong class="control-label required">Payment Mode:</strong><br />
+                                            @Html.RadioButton("IsPrePaid", true, new { @class = "form-check-input ml-2", @name = "paymentmode", @id = "Prepaid" })
+                                            &nbsp;&nbsp;<strong class="form-check-label pl-4" for="Prepaid"><i class="fa fa-cc-mastercard"></i> PrePaid</strong>
+                                            <br />
+                                            @Html.RadioButton("IsPrePaid", false, new { @class = "form-check-input ml-2", @name = "paymentmode", @id = "COD" })
+                                            &nbsp;&nbsp;<strong class="form-check-label pl-4" for="COD"><i class="fas fa-money"></i>  Cash on Delivery </strong>
+                                        </div>
+                                        <div class="form-group col-md-12 mt-1">
+                                            @Html.ValidationMessage("ErrorMsg");
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <button type="submit" class="btn btn-warning btn-sm float-right"> Placed Order </button>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        @*<div class="col-md-12">
+                                <strong><i class="fas fa-shopping-basket"></i> OrderID: <span class="text-info">@Model.OrderID</span></strong><br />
+                            </div>
+                            <hr />
+                            <div class="col-md-12">
+                                <strong> Mode Of Payment</strong><br />
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <button type="submit" class="btn btn-warning btn-sm float-right"> Placed Order </button>
+                                <div class="clearfix"></div>
+                            </div>*@
+                    </div>
+                    @*<hr />*@
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                Test
+            </div>
+        </div>
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>

@@ -1,0 +1,36 @@
+﻿@model UppaiWeb.Areas.MasterConfig.Models.CMSContentVM
+    @{
+        ViewBag.Title = "CMS Content";
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+
+    <link href="~/Content/AdminStyle/ns-pager-style.css" rel="stylesheet" />
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                <i class="fas fa-fw fa-hand-point-right"></i>
+            </div>
+            <div>
+                <div class="page-title-main-text linebreak">
+                    CMS Content Management
+                </div>
+            </div>
+        </div>
+        @*<div class="page-title-actions mt-3"> <a href="/masterconfig/webcontent/Addbanner" class="btn btn-danger"> <i class="fa fa-plus"></i> Add Banner</a></div>*@
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-file-alt"></i> CMS Content Management <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i> CMS Content List</small></h6>
+        </div>
+        <div class="clearfix"></div>
+        @Html.Partial("_pvCMSContentList", Model)
+    </div>
+
+    @*error message*@
+    <div id="ErrMsg" style="display:none;">
+        <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+    </div>
+    @*@section scripts{
+
+        }*@
+

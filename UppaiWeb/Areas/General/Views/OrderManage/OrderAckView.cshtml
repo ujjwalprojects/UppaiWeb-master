@@ -1,0 +1,244 @@
+﻿@model UppaiWeb.Areas.General.Models.OrderAckVM
+@{
+    ViewBag.Title = "Order Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    decimal TotalPartner = 0;
+    TotalPartner = @Model.OrderManage.NetAmt + @Model.OrderManage.TaxAmt;
+}
+@{
+    List<string> TimeTaken = new List<string>();
+    int startval = 10;
+    string strval = "";
+    while (startval <= 120)
+    {
+        strval = startval + " Min";
+        TimeTaken.Add(strval);
+        startval += 10;
+    }
+}
+<link href="~/Content/Select2/select2.min.css" rel="stylesheet" />
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Order Manage
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/general/ordermanage/ordermanagelist" class="btn btn-danger"> <i class="fa fa-edit"></i>  Order List</a></div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-toilet-paper"></i> Order Manage <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>Order Acknowledge/View</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        <div class="alert alert-light">
+            <h2 class="text-center">Order Details</h2>
+            <div class="col-md-12 mt-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="control-label">Order#: <strong>@Model.OrderManage.OrderID</strong> </label>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Date: <strong>@Model.OrderManage.OrderDate.ToString("dd MMM yyyy hh:mm")</strong></label>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <label class="control-label">Status: <strong class="badge badge-warning"> @Model.OrderManage.LatestStatus</strong> </label>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Order From: <strong>@Model.OrderManage.PartnerName</strong></label>
+                    </div>
+                    @*<div class="col-md-4 text-right">
+                            <label class="control-label">Order By: <strong>@Model.OrderManage.OrderBy</strong></label>
+                        </div>*@
+                    <div class="col-md-5">
+                        <label class="control-label">
+                            Order Type:
+                            <strong>
+                                @(Model.OrderManage.OrderSchedule == null ? "Delivery Now" : "Advance Order")
+                                @if (Model.OrderManage.OrderSchedule != null)
+                                {
+                                    <span> On @Model.OrderManage.OrderSchedule.Value.ToString("dd MMM yyyy hh:mm")</span>
+                                }
+                            </strong>
+                        </label>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <label class="control-label">
+                            Total Amount:
+                            @if (User.IsInRole("Partner"))
+                            {
+                                <strong><i class="fa fa-rupee"></i> @TotalPartner.ToString("0.00")</strong>
+                            }
+                            else
+                            {
+                                <strong><i class="fa fa-rupee"></i> @Model.OrderManage.TotalAmt.ToString("0.00")</strong>
+                            }
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="control-label">Order Assign To: <strong class="badge badge-info"> @(Model.OrderManage.AssignTo == null ? "N/A" : Model.OrderManage.AssignTo)</strong> </label>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <label class="control-label">Payment Mode <strong class="badge badge-info"> @(Model.OrderManage.IsPrePaid == true ? "Pre-Paid Order" : "COD Order")</strong> </label>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="control-label">Deliver To: <strong>@Model.OrderManage.DeliverTo</strong></label>
+                    </div>
+
+                    @if (Model.OrderManage.LatestStatus == "Order Placed" && User.IsInRole("Partner"))
+                    {
+                        <div class="col-md-12" id="BtnDiv">
+                            <div class="action-div action-style mt-2">
+                                <span class="btn btn-danger btn-sm float-right ml-2 BtnOrderAck" id="Btn_Cancel"><i class="fa fa-remove-format"></i> Order Cancel</span>
+                                <span class="btn btn-success btn-sm float-right BtnOrderAck" id="Btn_Accept"><i class="fa fa-check"></i> Order Accept</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-none" id="FormDiv">
+                            <form action="/general/ordermanage/OrderAckView" method="post">
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.OrderAck.OrderID)
+                                <div class="col-md-12 mt-3">
+                                    <div class="row" id="AckDiv">
+                                        <div class="form-group col-md-12 mt-2">
+                                            <label class="control-label required">How much time will be taken to prepare this Order:</label>
+                                            @Html.DropDownListFor(m => m.OrderAck.Remarks, new SelectList(TimeTaken), "----Select Time----", new { @class = "form-control ddSelect2", @placeholder = "Select Time" })
+                                            @Html.ValidationMessageFor(m => m.OrderAck.Remarks)
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <button type="submit" class="btn btn-success btn-sm float-right" name="btnReq" value="Order Confirmed"> Save Order Accept</button>
+                                            <span class="btn btn-danger btn-sm float-left" id="Btn_Cancel"><i class="fa fa-remove-format"></i> Order Cancel</span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="CancelDiv">
+                                        <div class="form-group col-md-12 mt-2">
+                                            <label class="control-label required">Reason For Order Cancel:</label>
+                                            @Html.TextBoxFor(m => m.OrderAck.Reason, new { @class = "form-control", @placeholder = "Enter Reason"})
+                                            @Html.ValidationMessageFor(m => m.OrderAck.Reason)
+                                        </div>
+                                        <div class="col-md-12 mb-2">
+                                            <button type="submit" class="btn btn-danger btn-sm float-right" name="btnReq" value="Order Cancelled"> Save Order Cancel</button>
+                                            <span class="btn btn-success btn-sm float-left" id="Btn_Accept"><i class="fa fa-check"></i> Order Accept</span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            @*<div class="action-div action-style mt-2">
+                                <span class="btn btn-danger btn-sm float-right ml-2" id="Btn_Cancel">Order Cancel</span>
+                                <span class="btn btn-success btn-sm float-right" id="Btn_Accept">Order Accept</span>
+                            </div>*@
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="alert alert-light">
+            <h2 class="text-center">Order Items Details</h2>
+            <div class="col-md-12 mt-3">
+                <div class="table-responsive mb-2">
+                    <table class="table table-striped" width="100%">
+                        <tbody class="fontsize-13">
+                            @if (@Model.OrderItems != null)
+                            {
+                                foreach (var item in @Model.OrderItems)
+                                {
+                                    <tr>
+                                        <td class="text-left" style="vertical-align:middle;">@item.MenuName</td>
+                                        <td class="text-center" style="vertical-align:middle;"><i class="fa fa-rupee"></i> @item.Price.ToString("0.00")</td>
+                                        <td class="text-center" style="vertical-align:middle;">@item.Qty</td>
+                                        <td class="text-right" style="vertical-align:middle;"><i class="fa fa-rupee"></i> @item.TotalAmt.ToString("0.00")</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Sub Total:</b></td>
+                                    <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderManage.NetAmt.ToString("0.00")</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Tax Amount:</b></td>
+                                    <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderManage.TaxAmt.ToString("0.00")</b></td>
+                                </tr>
+                                if (User.IsInRole("Partner"))
+                                {
+                                    <tr>
+                                        <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Grand Total:</b></td>
+                                        <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @TotalPartner.ToString("0.00")</b></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Delivery Fee:</b></td>
+                                        <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderManage.DeliveryFee.ToString("0.00")</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Grand Total:</b></td>
+                                        <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderManage.TotalAmt.ToString("0.00")</b></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section scripts{
+    <script src="~/Content/Select2/select2.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.ddSelect2').select2({ width: '100%' });
+            $(document).on("click", "#Btn_Cancel", function () {
+                $('#BtnDiv').addClass('d-none')
+                $('#FormDiv').removeClass('d-none')
+                $('#AckDiv').addClass('d-none')
+                $('#CancelDiv').removeClass('d-none')
+            })
+            $(document).on("click", "#Btn_Accept", function () {
+                $('#BtnDiv').addClass('d-none')
+                $('#FormDiv').removeClass('d-none')
+                $('#AckDiv').removeClass('d-none')
+                $('#CancelDiv').addClass('d-none')
+            })
+            var HideShow = function (btnval) {
+                alert(btnval)
+                if (btnval== "Order Cancelled") {
+                    $('#BtnDiv').addClass('d-none')
+                    $('#FormDiv').removeClass('d-none')
+                    $('#AckDiv').addClass('d-none')
+                    $('#CancelDiv').removeClass('d-none')
+                }
+                else if (btnval== "Order Confirmed") {
+                    $('#BtnDiv').addClass('d-none')
+                    $('#FormDiv').removeClass('d-none')
+                    $('#AckDiv').removeClass('d-none')
+                    $('#CancelDiv').addClass('d-none')
+                }
+                else {
+                    $('#BtnDiv').removeClass('d-none')
+                    $('#FormDiv').addClass('d-none')
+                }
+            }
+            //$(document).on('click', '.BtnOrderAck', HideShow(this));
+            HideShow('@ViewBag.BtnReq');
+        });
+    </script>
+}
+
+

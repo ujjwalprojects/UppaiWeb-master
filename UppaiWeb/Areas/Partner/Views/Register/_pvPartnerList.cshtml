@@ -1,0 +1,122 @@
+﻿@model UppaiWeb.Areas.Partner.Models.PartnerVM
+@{ int i = 1;}
+<div id="DataGrid">
+    @if (Model.PartnerList.Count() > 0)
+    {
+        if (!string.IsNullOrEmpty(@ViewBag.SearchTerm))
+        {
+            <div class="col-md-12">
+                <i>
+                    Showing Results For Search Key : <b class="text-warning">@ViewBag.SearchTerm</b>
+                </i>
+            </div>
+        }
+        <div class="table-responsive p-2">
+            <table class="table table-striped table-condensed table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="vertical-align:middle;width:8%">SL No.</th>
+                        <th class="text-center" style="vertical-align:middle;">Partner Details</th>
+                        <th class="text-center" style="vertical-align:middle;width:12%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.PartnerList)
+                    {
+                        <tr>
+                            <td class="text-center" style="vertical-align:middle;">@i</td>
+                            <td style="vertical-align:middle;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="text-left">Name: <strong>@item.Name</strong></span>
+                                    </div>
+                                    <div class="col-md-6 text-left">
+                                        <span class="text-left">Email: <strong>@item.EmailID</strong></span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <span class="text-left">Phone No: <strong>@item.MobileNo</strong></span>
+                                    </div>
+                                    <div class="col-md-6  text-left">
+                                        <span class="text-left">User Role: <strong>@item.RoleName</strong></span>
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        @if (item.IsActive == true)
+                                        {
+                                            <span>Status: </span><span class="badge badge-success">User is Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Status: </span><span class="badge badge-danger">User is Disabled</span>
+                                        }
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        @if (item.EmailConfirmed == true)
+                                        {
+                                            <span>Email Confirmed: </span><span class="badge badge-success">Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Email Confirmed: </span><span class="badge badge-warning">No</span>
+                                        }
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span class="text-left">Address: <strong>@item.Address</strong></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="row p-0">
+                                    <div class="col-md-12 mt-1">
+                                        <a href="@Url.Action("EditPartner","Register", new { id = @item.Id })" data-toggle="tooltip" data-placement="bottom" title="Edit" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-fw fa-edit"></i> Edit
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12 mt-1">
+                                        <form action="/partner/register/DisableUser" method="post" data-otf-ajax="true" data-otf-target="#DataGrid">
+                                            @Html.AntiForgeryToken()
+                                            <a href="@Url.Action("DisableEnableUser","Register", new { id = item.Id,Area="Partner"})" class="status btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Disable/Enable User" data-record="@item.Name">
+                                                @if (item.IsActive)
+                                                {
+                                                    <i class="fas fa-fw fa-lock"></i>
+                                                    <span>Disable</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fas fa-fw fa-lock-open"></i>
+                                                    <span>Enable</span>
+                                                }
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        i = i + 1;
+                    }
+                </tbody>
+            </table>
+            <div class="col-md-12">
+                <div class="ns-grid-pager row" data-otf-target="#DataGrid">
+                    <div class="hidden-xs col-md-3 col-sm-3">
+                        @Model.PagingInfo.TotalItems Record(s)
+                    </div>
+                    <div class="text-black-50 col-md-9 col-sm-9 ns-pagination" data-otf-target="#DataGrid" data-otf-actionlink="/Partner/register/partnerlist">
+                        @Html.PageLinks(Model.PagingInfo, x => Url.Action("partnerlist", "register", new { @Area = "Partner", PageNo = x, PageSize = Model.PagingInfo.ItemsPerPage }))
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <img src="~/Content/Image/no_record.png" /><br />
+            <span class="text-muted">No records available or your searched record in not available..</span>
+        </div>
+    }
+</div>
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>

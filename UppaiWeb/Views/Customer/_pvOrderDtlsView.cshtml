@@ -1,0 +1,109 @@
+﻿@model UppaiWeb.ViewModels.OrderDtlsVM
+<div id="orddtls" class="col-md-12">
+    <div class="row">
+        <div class="col-md-4 text-left">
+            <span>Order #:</span><strong> @Model.OrderDtls.OrderID</strong>
+        </div>
+        <div class="col-md-4 text-center">
+            <span>Date:</span><strong> @Model.OrderDtls.OrderDate.ToString("dd MMM yyyy")</strong>
+        </div>
+        <div class="col-md-4 text-right">
+            @if (Model.OrderDtls.IsPrePaid)
+            {
+                <span>Payment Mode:</span><strong> Prepaid</strong>
+            }
+            else
+            {
+                <span>Payment Mode:</span><strong> COD</strong>
+            }
+
+        </div>
+
+        <div class="col-md-12">
+            <span class="pull-left">From: <span class="text-success">@Model.OrderDtls.PartnerName</span></span>
+            <div class="table-responsive mb-2">
+                <table class="table table-striped" width="100%">
+                    <tbody class="fontsize-13">
+                        @if (@Model.CheckOutItems != null)
+                        {
+                            foreach (var item in @Model.CheckOutItems)
+                            {
+                                <tr>
+                                    <td class="text-left" style="vertical-align:middle;">@item.MenuName</td>
+                                    <td class="text-center" style="vertical-align:middle;"><i class="fa fa-rupee"></i> @item.Price.ToString("0.00")</td>
+                                    <td class="text-center" style="vertical-align:middle;">@item.Qty</td>
+                                    <td class="text-right" style="vertical-align:middle;"><i class="fa fa-rupee"></i> @item.TotalAmt.ToString("0.00")</td>
+                                </tr>
+                            }
+                            <tr>
+                                <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Sub Total:</b></td>
+                                <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderDtls.NetAmt.ToString("0.00")</b></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Tax:</b></td>
+                                <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderDtls.TaxAmt.ToString("0.00")</b></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Delivery Fee:</b></td>
+                                <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderDtls.DeliveryFee.ToString("0.00")</b></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" colspan="3" style="vertical-align:middle;"><b>Grand Total:</b></td>
+                                <td class="text-right" style="vertical-align:middle;"><b><i class="fa fa-rupee"></i> @Model.OrderDtls.TotalAmt.ToString("0.00")</b></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @if (Model.OrderDtls.OrderType == "Delivery Now")
+        {
+            if (!string.IsNullOrEmpty(@Model.OrderDtls.DeliveryInstruction))
+            {
+                <div class="col-md-6">
+                    <span>Delivery Type: </span><strong> Now</strong>
+                </div>
+                <div class="col-md-6">
+                    <span>Delivery Instruction: </span><strong> @Model.OrderDtls.DeliveryInstruction</strong>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <span>Delivery Type: </span><strong> @Model.OrderDtls.OrderType</strong>
+                </div>
+            }
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(@Model.OrderDtls.DeliveryInstruction))
+            {
+                <div class="col-md-4">
+                    <span>Delivery Type: </span><br /><strong> Schedule</strong>
+                </div>
+                <div class="col-md-4">
+                    <span>Delivery Schedule: </span><br /><strong> @Model.OrderDtls.OrderSchedule.Value.ToString("dd MMM yyyy hh:mm")</strong>
+                </div>
+                <div class="col-md-4">
+                    <span>Delivery Instruction: </span><br /><strong> @Model.OrderDtls.DeliveryInstruction</strong>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-6">
+                    <span>Delivery Type: </span><strong> @Model.OrderDtls.OrderType</strong>
+                </div>
+                <div class="col-md-6">
+                    <span>Delivery Schedule: </span><strong> @Model.OrderDtls.OrderSchedule.Value.ToString("dd MMM yyyy hh:mm")</strong>
+                </div>
+            }
+        }
+        
+        <div class="col-md-12 mt-2">
+            <span>Deliver To:</span>
+            <small>@Html.Raw(@Model.OrderDtls.ShipTo)</small>
+        </div>
+
+    </div>
+</div>
+

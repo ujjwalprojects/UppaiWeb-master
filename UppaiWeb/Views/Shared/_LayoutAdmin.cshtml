@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    <!-- plugins:css -->
+    @Styles.Render("~/bundles/Admincss")
+    @Styles.Render("~/bundles/css")
+    <link href="~/Content/AdminStyle/toastr.css" rel="stylesheet" />
+    @RenderSection("css", required: false)
+    @*<link href="~/Content/fontawesome-free/css/all.css" rel="stylesheet" />
+        <link href="~/Content/css/sb-admin-2.css" rel="stylesheet" />
+        <link href="~/Content/Site.css" rel="stylesheet" />
+        <link href="~/Content/toastr.min.css" rel="stylesheet" />
+        <link href="~/Content/FormStyle.css" rel="stylesheet" />*@
+    <!-- endinject -->
+    @*<link rel="shortcut icon" href="~/favicon.png" />*@
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+</head>
+<body>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidemenu-bg sidebar sidebar-dark accordion sidebarMenu" id="accordionSidebar">
+            <li>
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                    <div class="sidebar-brand-text mx-3">Uppai<sup>Admin</sup></div>
+                </a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="/user/dashboard">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <strong>Dashboard</strong>
+                </a>
+            </li>
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item minus-mt15px">
+                    <a class="nav-link" href="/partner/register/partnerlist">
+                        <i class="fas fa-fw fa-handshake"></i>
+                        <strong>Partner Manager</strong>
+                    </a>
+                </li>
+                <li class="nav-item minus-mt15px">
+                    <a class="nav-link" href="/deliveryagent/register/deliveryagentlist">
+                        <i class="fas fa-fw fa-bicycle"></i>
+                        <strong>Delivery Agent</strong>
+                    </a>
+                </li>
+                @*<li class="nav-item minus-mt15px">
+                <a class="nav-link" href="/masterconfig/masterconfiguration/businesscategorylist">
+                    <i class="fas fa-fw fa-cogs"></i>
+                    <strong>Business Category</strong>
+                </a>
+            </li>
+            <li class="nav-item minus-mt15px">
+                <a class="nav-link" href="/masterconfig/masterconfiguration/menucategorylist">
+                    <i class="fas fa-fw fa-cogs"></i>
+                    <strong>Menu Category</strong>
+                </a>
+            </li>*@
+
+            }
+            @if (User.IsInRole("Partner"))
+            {
+                <li class="nav-item minus-mt15px">
+                    <a class="nav-link" href="/partner/register/myprofile">
+                        <i class="fas fa-fw fa-user"></i>
+                        <strong>Profile Manage</strong>
+                    </a>
+                </li>
+            }
+            @if (!User.IsInRole("Delivery Agent"))
+            {
+                <li class="nav-item minus-mt15px">
+                    <a class="nav-link" href="/masterconfig/menu/menulist">
+                        <i class="fas fa-fw fa-file-alt"></i>
+                        <strong>Menu Manage</strong>
+                    </a>
+                </li>
+
+                @*if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item minus-mt15px">
+                        <a class="nav-link" href="/general/ordermanage/ordermanagelist">
+                            <i class="fas fa-fw fa-toilet-paper"></i>
+                            <strong>Order Manage</strong>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item minus-mt15px">
+                        <a class="nav-link" href="/general/ordermanage/ordermanagelist">
+                            <i class="fas fa-fw fa-toilet-paper"></i>
+                            <strong>Order Manage</strong>
+                        </a>
+                    </li>
+                }*@
+
+            }
+            <li class="nav-item minus-mt15px">
+                <a class="nav-link" href="/general/ordermanage/ordermanagelist">
+                    <i class="fas fa-fw fa-toilet-paper"></i>
+                    <strong>Order Manage</strong>
+                </a>
+            </li>
+            @if (User.IsInRole("Delivery Agent"))
+            {
+                <li class="nav-item minus-mt15px">
+                    <a class="nav-link" href="/deliveryagent/register/myprofile">
+                        <i class="fas fa-fw fa-user"></i>
+                        <strong>Profile Manage</strong>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item minus-mt15px">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#webSec" aria-expanded="true" aria-controls="webSec">
+                        <i class="fas fa-fw fa-globe"></i>
+                        <strong>Web Content</strong>
+                    </a>
+                    <div id="webSec" class="collapse" aria-labelledby="WebSection" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/masterconfig/webcontent/cmscontentlist">CMS Content</a>
+                            <a class="collapse-item" href="/masterconfig/webcontent/bannerlist">Banner</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item minus-mt15px">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#mstSec" aria-expanded="true" aria-controls="mstSec">
+                        <i class="fas fa-fw fa-cogs"></i>
+                        <strong>Master Config</strong>
+                    </a>
+                    <div id="mstSec" class="collapse" aria-labelledby="MstSection" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/masterconfig/masterconfiguration/businesscategorylist">Business Category</a>
+                            <a class="collapse-item" href="/masterconfig/masterconfiguration/menucategorylist">Menu Category</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item minus-mt15px">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#UserSec" aria-expanded="true" aria-controls="UserSec">
+                        <i class="fas fa-fw fa-users-cog"></i>
+                        <strong>User Management</strong>
+                    </a>
+                    <div id="UserSec" class="collapse" aria-labelledby="UserSection" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/user/userlist">User List</a>
+                        </div>
+                    </div>
+                </li>
+            }
+
+
+
+
+            <hr class="sidebar-divider d-none d-md-block">
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow mx-1" style="margin-top:20px">
+                            <span>Hi </span><strong class="text-info"> @User.Identity.Name</strong>
+                        </li>
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @*<span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetProfileName()</span>*@
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                                <img class="img-profile rounded-circle" src="~/Content/Image/face1.png">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                @*<a class="dropdown-item" href="/account/myprofile">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profile
+                                    </a>*@
+                                <a class="dropdown-item" href="/account/changepassword">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
+                                </a>
+                                @*<a class="dropdown-item" href="#">
+                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Activity Log
+                                    </a>*@
+                                <div class="dropdown-divider"></div>
+                                <form method="post" action="@Url.Action("logoff", "account", new { @Area = "" })" id="logOut">
+                                    @Html.AntiForgeryToken()
+                                    @*<a href="javascript:document.getElementById('logOut').submit()" class="dropdown-item">
+                                            <span class="no-icon text-danger">Log out</span>
+                                        </a>*@
+                                    <a class="dropdown-item" href="javascript:document.getElementById('logOut').submit()">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </form>
+
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="content container-fluid">
+                    @RenderBody()
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Uppai Delivery @DateTime.Now.Year</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!--Changes 03 Oct-->
+    <div class="toast-container"></div>
+    <input type="hidden" id="ActiveURL" data-value="@ViewBag.ActiveURL" />
+    <div id="ajaxLoading" class="fade in" style="background-color: rgb(0, 0, 0); bottom: 0px; left: 0px; position: fixed; right: 0px; top: 0px; z-index: 10000; opacity: 0.5; display: none;max-width: 200px;max-height: 160px;">
+        <div class="text-center panel center-div mt-5">
+            <div class="panel-body">
+                <img src="~/Content/Image/loading.gif" />
+                <p class="m-2 text-white"><b>Please wait...</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-styled" id="myErroMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-md-12">
+                        <button type="button" class="close color-white" data-dismiss="modal" aria-label="Close" onclick="CloseMyModal()"><span aria-hidden="true">&times;</span></button>
+                        <i class="fa fa-info-circle color-white float-left"></i> <span class="modal-title color-white" id="myErroModalLabel"></span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <h5 id="Msg" class="text-center"></h5>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-offset-2 col-md-10 text-right" style="padding-right: 0;">
+                        <input type="button" id="myErroMsgModalNoButton" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="CloseMyModal()" value="Cancel" />
+                        <input type="button" id="myErroMsgModalYesButton" value="Yes" class="btn btn-info btn-sm invisible" onclick="OkMyModal()" />
+                    </div>
+                </div>
+                <input type="hidden" id="eventSender" name="name" value=" " />
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrapjs")
+    @Scripts.Render("~/bundles/Adminjs")
+    @*<script src="~/Scripts/CustomAjax.js"></script>*@
+    @*<script src="~/Scripts/CustomAjax.js"></script>*@
+    @*<script src="~/Scripts/moment.min.js"></script>
+        <script src="~/Scripts/jquery.easing.min.js"></script>
+        <script src="~/Scripts/js/sb-admin-2.js"></script>
+        <script src="~/Scripts/member.js"></script>
+        <script src="~/Scripts/toastr.js"></script>*@
+    <script src="~/Scripts/toastr.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

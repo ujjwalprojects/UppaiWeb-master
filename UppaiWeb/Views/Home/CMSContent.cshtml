@@ -1,0 +1,34 @@
+﻿@model UppaiWeb.ViewModels.CMSContentView
+@{
+    Layout = "~/Views/Shared/_LayoutGeneral.cshtml";
+}
+<div class="partner-section pt-5 pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="menu-title">
+                    <h2>@Model.CMSContentTitle</h2>
+                    <ul class="custom_breadcrumb">
+                        <li><a href="/home/index"><i class="fa fa-home"></i> Home</a></li>
+                        <li><i class="fa fa-info"></i> @Model.CMSContentTitle</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class=" col-md-12">
+            <div class=" row">
+                <div class="col-md-12 text-justify">
+                    @Html.Raw(HttpUtility.HtmlDecode(@Model.CMSContent))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+
+
+

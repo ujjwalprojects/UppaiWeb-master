@@ -1,0 +1,457 @@
+﻿@model UppaiWeb.ViewModels.MenuDtlsVM
+@{
+    Layout = "~/Views/Shared/_LayoutGeneral.cshtml";
+
+}
+<style type="text/css">
+    .lineovertext {
+        text-decoration: line-through solid 2px #f35a6d;
+    }
+</style>
+<!-- Start All Title Box -->
+<div class="all-title-box" style="">
+    <div class="container">
+        <div class="col-lg-12  bg-transparent pt-4 pb-2">
+            <div class="row">
+                <div class="col-md-2">
+                    @if (!string.IsNullOrEmpty(@Model.PartnerDtls.ImagesUpload))
+                    {
+                        <img src="@Model.PartnerDtls.ImagesUpload" class="img-thumbnail" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/Image/PartnerDefault.jpg" class="img-thumbnail" />
+                    }
+                </div>
+                <div class="col-md-6 text-left">
+                    <h2>@Model.PartnerDtls.Name</h2>
+                    <p><i class="fas fa-map-marker-alt"></i> @Model.PartnerDtls.Address</p>
+                    <p><i class="fas fa-clock"></i>@Model.PartnerDtls.OpeningTime - @Model.PartnerDtls.ClosedTime</p>
+                    @if (Model.PartnerDtls.TodayIsClosed == "Yes")
+                    {
+                        <p><i class="fas fa-lock"></i> Today: Closed</p>
+                    }
+                    else
+                    {
+                        <p><i class="fas fa-lock-open"></i> Today: Open</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="menu-title">
+                    <h2>@Model.PartnerDtls.Name Menu Details</h2>
+                    <ul class="custom_breadcrumb">
+                        <li><a href="/home/index"><i class="fa fa-home"></i> Home</a></li>
+                        <li><a href="/home/partnerlist"><i class="fa fa-cutlery"></i> Restaurants</a></li>
+                        <li><i class="fas fa-hamburger"></i> Menu</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @if (Model.MenuCategoryList.Count() > 0)
+        {
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="special-menu text-center">
+                        <div class="button-group filter-button-group">
+                            <button class="menucat active" data-filter="*" id="key_0">All</button>
+                            @foreach (var MenuCat in Model.MenuCategoryList)
+                            {
+                                <button class="menucat" data-filter=".@MenuCat.ItemCategoryID" id="key_@MenuCat.ItemCategoryID">@MenuCat.ItemCategoryName</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-md-8 shop-content-right card">
+                <div class="right-product-box">
+                    <div class="product-item-filter row card-header bg-white">
+                        <div class="col-md-8 col-sm-8 text-center text-sm-left">
+                            <div class="input-group">
+                                <input type="text" name="SearchTerm" id="inputsearch" class="form-control" autocomplete="off" placeholder="Search By Menu Name..." />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning pull-left" type="submit" id="search" value="Search">
+                                        <i class="fa fa-search"> </i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 text-center text-sm-right">
+                            <strong>Show Veg: &nbsp;</strong>
+                            <label class="switch">
+                                <input type="checkbox" id="tglbtn" value="false">
+                                <span class="slider round">
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="product-categorie-box">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
+                                <div class="row">
+                                    <p id="demo" class="ml-4 mt-2"></p>
+                                    <div class="col-md-12" id="MenuDtlsView">
+                                        @*@Html.Partial("_pvmenulist", Model)*@
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        @if (@Model.CheckOutItems != null)
+                        {
+                            <strong>Your Shopping Cart</strong> <span class="pull-right">(<span id="mycart"> @Model.CheckOutItems.Sum(x => x.Qty) </span> Items)</span>
+                        }
+                        else
+                        {
+                            <strong>Your Shopping Cart</strong> <span class="pull-right">(<span id="mycart"> 0 </span> Items)</span>
+                        }
+                        @*<span class="pull-left">From: <span class="text-success"></span></span>*@
+                    </div>
+                    <div class="card-body p-1">
+                        <div class="table-responsive">
+                            <table class="table table-striped" width="100">
+                                <tbody class="fontsize-13">
+                                    @if (@Model.CheckOutItems != null)
+                                    {
+                                        foreach (var item in @Model.CheckOutItems)
+                                        {
+                                            <tr class="data-row" id="rowdtls_@item.MenuID">
+                                                <td>
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-12 font-weight-bold tr_menu_name" id="menuname_@item.MenuID">@item.MenuName</div>
+                                                            <div class="col-md-4 tr_menu_price" id="menuprice_@item.MenuID"><i class="fa fa-rupee"></i> @item.Price.ToString("0.00")</div>
+                                                            <div class="col-md-4 text-center tr_menu_qty">
+                                                                <span class="">
+                                                                    <a href="javascript:void(0)" class="cartminus" id="minusone_@item.MenuID"><i class="fa fa-minus-circle"></i></a>&nbsp;&nbsp; <span id="qty_@item.MenuID">  @item.Qty </span> &nbsp;&nbsp;<a href="javascript:void(0)" class="cartplus" id="plusone_@item.MenuID"><i class="fa fa-plus-circle"></i></a>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-md-4 text-right tr_menu_total" id="menutotal_@item.MenuID"><i class="fa fa-rupee"></i> @item.TotalAmt.ToString("0.00")</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="tr_menu_id d-none">@item.MenuID</td>
+                                                <td class="tr_menu_partner d-none"> @item.AddedBy</td>
+                                                <td class="tr_menu_type d-none">@item.MenuType</td>
+                                                <td class="tr_menu_partnerid d-none">@item.PartnerID </td>
+                                                @*<td class="tr_menu_name text-left" style="vertical-align:middle">@item.MenuName</td>
+                                                    <td class="tr_menu_price text-right" style="vertical-align:middle">@item.Price.ToString("0.00")</td>
+                                                    <td class="tr_menu_qty text-center" style="vertical-align:middle">
+                                                        <span class="btn btn-sm add-cart-btn" id="cartbtn_@item.MenuID">
+                                                            <a href="javascript:void(0)" class="cartminus"><i class="fa fa-minus-circle text-white"></i></a>&nbsp;&nbsp; <span id="qty">  @item.Qty </span> &nbsp;&nbsp;<a href="javascript:void(0)" class="cartplus"><i class="fa fa-plus-circle text-white"></i></a>
+                                                        </span>
+                                                    </td>
+                                                    <td class="tr_menu_total text-right" style="vertical-align:middle">@item.TotalAmt.ToString("0.00")</td>*@
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr id="noitems">
+                                            <td class="text-center">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <img src="~/Content/Image/no_record.png" />
+                                                    </div>
+                                                    <div class="col-md-12 text-center">
+                                                        <h3 class="text-muted">Your cart is empty</h3>
+                                                    </div>
+                                                    <div class="col-md-12 text-center">
+                                                        <h3 class="text-muted">Add items to get started</h3>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                                @*<tr>
+                                        <td class="text-right">Sub Total:</td>
+                                        <td class="text-right">@Model.CheckOutItems.Sum(x => x.TotalAmt).ToString("0.00")</td>
+                                    </tr>*@
+                            </table>
+                        </div>
+
+
+                        <div class="card-footer bg-white p-1  d-none" id="chkoutbtn">
+                            <a href="/Customer/CheckOut" class="btn btn-sm hvr-hover pull-right"><i class="fa fa-shopping-bag"></i> Check Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var Orderfrom = '@Model.OrdFrom';
+
+        $(document).ready(function (e) {
+            var cartContainer = document.getElementsByTagName('tbody')[0]
+            var mycartcount = function () {
+                var count = $('#mycart').text();
+                $('#cartcount').text(count);
+            }
+            mycartcount();
+            //Toggle Btn Operation
+            $("#tglbtn").on('change', function () {
+                if ($(this).is(':checked')) {
+                    $(this).attr('value', 'true');
+                }
+                else {
+                    $(this).attr('value', 'false');
+                }
+                var TabActive = $('.menucat.active').attr("id");
+                var CatID = TabActive.split('_');
+                loadmenulist(CatID[1]);
+            });
+            //Search Operation
+            $('#search').on('click', function () {
+                var TabActive = $('.menucat.active').attr("id");
+                var CatID = TabActive.split('_');
+                loadmenulist(CatID[1]);
+                var x = '<i> Showing Results for Search Key: <b class="text-warning">"' + document.getElementById("inputsearch").value + '" </b> <a href="/home/MenuDetails/'+'@Model.PartnerDtls.PartnerID'+'">&nbsp; <u>Clear Search</u></a></i>';
+                document.getElementById("demo").innerHTML = x;
+            });
+
+            //By Default (on Page Load)
+            $.ajax({
+                url: '/Home/GetMenuList',
+                type: 'GET',
+                data: { CatID: 0, SearchTerm: $('#inputsearch').val(), PID: '@Model.PartnerDtls.PartnerID', IsVegOnly: $('#tglbtn').val() },
+                success: function (data) {
+                    $('#MenuDtlsView').empty().append(data);
+                    RecordsExistsInCard();
+                }
+            });
+
+            //Filter by Menu Category
+            var MenuDtls = function () {
+                var FilterID = $(this).attr("id");
+                var CatID = FilterID.split('_');
+                $.ajax({
+                    url: '/Home/GetMenuList',
+                    type: 'GET',
+                    data: { CatID: CatID[1], SearchTerm: $('#inputsearch').val(), PID: '@Model.PartnerDtls.PartnerID', IsVegOnly: $('#tglbtn').val() },
+                    success: function (data) {
+                        $('#MenuDtlsView').empty().append(data);
+                        RecordsExistsInCard();
+                    }
+                });
+            }
+            $(document).on('click', '.menucat', MenuDtls);
+            //Function For Get Menu List
+            function loadmenulist(val) {
+                $.ajax({
+                    url: '/Home/GetMenuList',
+                    type: 'GET',
+                    data: { CatID: val, SearchTerm: $('#inputsearch').val(), PID: '@Model.PartnerDtls.PartnerID', IsVegOnly: $('#tglbtn').val() },
+                    success: function (data) {
+                        $('#MenuDtlsView').empty().append(data);
+                        RecordsExistsInCard();
+                    }
+                });
+            }
+            //Menu Exists In Card
+            var RecordsExistsInCard = function () {
+                var rowno = $(".data-row").length;
+                $('.data-row').each(function (rowno) {
+                    var trmenuid = $(this).find('td.tr_menu_id').text();
+                    var trmenuqty = $('#qty_' + trmenuid).text();
+                    ($('#menuqty_' + trmenuid).text(trmenuqty));
+                    ($('#one_' + trmenuid).addClass("d-none"));
+                    ($('#combo_' + trmenuid).removeClass("d-none"));
+                });
+            }
+
+            //Function For Total Qty In My cart
+            var CartCountfun = function (Opr) {
+                var cartcount = $('#cartcount').text();
+                if (cartcount != "" || cartcount != "0") {
+                    if (Opr == "PlusOne") {
+                        cartcount = parseInt(cartcount) + parseInt(1);
+                    }
+                    else {
+                        cartcount = parseInt(cartcount) - parseInt(1);
+                    }
+                }
+                else {
+                    cartcount = parseInt(0) + parseInt(1)
+                }
+                $('#cartcount').text(cartcount);
+                $('#mycart').text(cartcount);
+                if (cartcount == "" || cartcount == "0") {
+                    ($('#chkoutbtn').addClass('d-none'));
+                    ($('#noitems').removeClass('d-none'));
+                }
+            }
+            //On click Add to cart
+            $(document).on('click', '.add-to-cart', function () {
+                var AddBtnid = $(this).attr("id");
+                var menuid = AddBtnid.split('_');//Get Menu ID
+                //samepartner();
+                //($('#onebtn_' + menuid[1]).addClass("d-none"));
+                //($('#combobtn_' + menuid[1]).removeClass("d-none"));
+                addToCart(menuid[1], 1)
+                CartCountfun('PlusOne')
+            })
+            //Add to cart Function
+            function addToCart(menuid,qty) {
+                var itemContainer = document.createElement('tr')
+                $(itemContainer).addClass("data-row");
+                $(itemContainer).attr("id", "rowdtls_" + menuid);
+                //table.setAttribute("id", i + 1);
+                $.ajax({
+                    type: 'GET',
+                    url: "/home/GetItemDtlsByID",
+                    data: { id: menuid },
+                    dataType: "json",
+                    success: function (data) {
+                        itemContainer.innerHTML =
+                        '<td>'
+                        +'<div class="col-md-12">'
+                            +'<div class="row">'
+                        + '<div class="col-md-12 font-weight-bold tr_menu_name"id="menuname_' + data.MenuID +'">'+data.MenuName+'</div>'
+                        + '<div class="col-md-4 tr_menu_price"id="menuprice_' + data.MenuID +'"><i class="fa fa-rupee"></i>' + data.Price.toFixed(2) +'</div>'
+                                +'<div class="col-md-4 text-center tr_menu_qty">'
+                                    + '<span class="">'
+                        + '<a href="javascript:void(0)" class="cartminus" id="minusone_' + data.MenuID + '"><i class="fa fa-minus-circle"></i></a>&nbsp;&nbsp; <span id="qty_' + data.MenuID + '">  ' + qty + ' </span> &nbsp;&nbsp;<a href="javascript:void(0)" class="cartplus" id="plusone_' + data.MenuID +'"><i class="fa fa-plus-circle"></i></a>'
+                                    +'</span>'
+                                +'</div>'
+                        + '<div class="col-md-4 text-right tr_menu_total"id="menutotal_' + data.MenuID +'"><i class="fa fa-rupee"></i>' + parseFloat(parseFloat(data.Price) * parseFloat(qty)).toFixed(2) + '</div>'
+                            +'</div>'
+                         +'</div>'
+                         + '</td>'
+                         + '<td class="tr_menu_partner d-none">' + data.AddedBy + '</td>'
+                         + '<td class="tr_menu_id d-none">' + data.MenuID + '</td>'
+                         + '<td class="tr_menu_type d-none">' + data.MenuType + '</td>'
+                         + '<td class="tr_menu_partnerid d-none">' + data.PartnerID + '</td>'
+                        cartContainer.append(itemContainer)
+                        PostCheckoutItems()
+                        RecordsExistsInCard();
+                        Orderfrom = data.AddedBy;
+                    }
+                })
+            }
+            //Send List of Records to controller
+            function PostCheckoutItems() {
+                //Build List object that has to be sent to controller
+                var MenuList = []; // list object
+                var index = $(".data-row").length;
+                $('.data-row').each(function (index) { //loop in table list
+                    var menu = {}; // create new Items object and set its properties
+                    menu.PartnerID = $(this).find('td.tr_menu_partnerid').text();
+                    menu.AddedBy = $(this).find('td.tr_menu_partner').text();
+                    menu.MenuID = $(this).find('td.tr_menu_id').text();
+                    menu.MenuType = $(this).find('td.tr_menu_type').text();
+                    menu.MenuName = $(this).find('div.tr_menu_name').text();
+                    menu.Price = $(this).find('div.tr_menu_price').text();
+                    menu.Qty = $(this).find('div.tr_menu_qty').text();
+                    menu.TotalAmt = $(this).find('div.tr_menu_total').text();
+                    MenuList.push(menu); // add Items object to list object
+                });
+                //Send list of Items to controller via ajax
+                $.ajax({
+                    url: "/home/PostCheckOutItems",
+                    type: "POST",
+                    data: JSON.stringify(MenuList),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        // Process response from controller
+                        if (data.length > 0) {
+                            //alert("Items have been saved successfully."); // show success notification
+                            ($('#chkoutbtn').removeClass('d-none'));
+                            ($('#noitems').addClass('d-none'));
+                        } else {
+                            alert("Ooops, an error has ocurrer while processing the transaction.");
+                            ($('#chkoutbtn').addClass('d-none'));
+                            ($('noitems').removeClass('d-none'));
+                        }
+                    }
+                });
+            }
+            //On click plus icon and Update in cart
+            $(document).on('click', '.cartplus', function () {
+                var IDVal = $(this).attr("id");
+                var MenuID = IDVal.split('_');
+                var chkoutQty = $('#qty_' + MenuID[1]).text();
+                var newchkoutQty = parseInt(chkoutQty) + parseInt(1);
+                UpdateToCart(MenuID[1], newchkoutQty);
+                CartCountfun('PlusOne');
+                //RecordsExistsInCard();
+            })
+            //On click Minus icon and Update in cart
+            $(document).on('click', '.cartminus', function () {
+                var IDVal = $(this).attr("id");
+                var MenuID = IDVal.split('_');
+                var chkoutQty = $('#qty_' + MenuID[1]).text();
+                var newchkoutQty = parseInt(chkoutQty) - parseInt(1);
+                if (newchkoutQty != 0) {
+                    UpdateToCart(MenuID[1], newchkoutQty);
+                }
+                else {
+                    var TabActive = $('.menucat.active').attr("id");
+                    var CatID = TabActive.split('_');
+                    $(this).closest("tr").remove();
+                    PostCheckoutItems();
+                    loadmenulist(CatID[1]);
+                }
+                CartCountfun('MinusOne');
+            })
+            //On click Image's Minus icon and Update in cart
+            $(document).on('click', '.memuminus', function () {
+                var IDVal = $(this).attr("id");
+                var MenuID = IDVal.split('_');
+                var chkoutQty = $('#qty_' + MenuID[1]).text();
+                var newchkoutQty = parseInt(chkoutQty) - parseInt(1);
+                if (newchkoutQty != 0) {
+                    UpdateToCart(MenuID[1], newchkoutQty);
+                }
+                else {
+                    var TabActive = $('.menucat.active').attr("id");
+                    var CatID = TabActive.split('_');
+                    $('#rowdtls_' + MenuID[1]).closest("tr").remove();
+                    //$(this).closest("tr").remove();
+                    PostCheckoutItems();
+                    loadmenulist(CatID[1]);
+                }
+                CartCountfun('MinusOne');
+            })
+            //Updated cart if menu already added in cart
+            function UpdateToCart(MenuID, QtyVal) {
+                var Rate = $('#menuprice_' + MenuID).text();
+                var NewTotal = parseFloat(QtyVal, 0) * parseFloat(Rate, 0);
+                $('#qty_' + MenuID).text(QtyVal);
+                $('#menutotal_' + MenuID).text(NewTotal.toFixed(2));
+                PostCheckoutItems();
+                RecordsExistsInCard();
+            }
+            PostCheckoutItems();
+        });
+    </script>
+}
+
+

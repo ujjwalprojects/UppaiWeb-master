@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/MainCss/responsive.css" rel="stylesheet" />
+    <link href="~/Content/MainCss/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Content/gencss/css/app.min.css" rel="stylesheet" />
+    <link href="~/Content/fontawesome-free/css/all.css" rel="stylesheet" />
+</head>
+<body>
+    <!--== Start Header Area ==-->
+    <header class="header-area">
+        <!-- Start Header Config Area -->
+        <div class="header-config-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-lg-6 d-none d-md-block">
+                        <div class="header-config-content">
+                            <ul class="media-icons nav">
+                                <li class="btn-cart"><a href="cart.html"><span>info@vajraworld.com</span></a></li>
+                                <li class="btn-cart"><a href="cart.html"><span>099334 60123</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-6">
+                        <div class="header-config-buttons">
+                            <ul class="media-icons nav">
+                                @*<li class="btn-cart"><a href="cart.html"><i class="ion-bag"></i> <span>Shopping Cart:</span> <strong class="amount">$0.00</strong></a></li>*@
+                                <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                                <li><a href="#"><i class="ion-social-instagram"></i></a></li>
+                                <li><a href="/account/login">Login</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Header Config Area -->
+        <!-- Start Header Navigation Area -->
+        <div class="header-nav-area">
+            <div class="container">
+                <div class="row align-items-center position-relative">
+                    <div class="col-8 col-lg-2 col-xl-3">
+                        <!-- Start Logo Wrapper -->
+                        <div class="logo-wrap"><a href="/home/index"><img src="~/Content/gencss/img/logo2.png" alt="Logo"></a></div>
+                        <!-- End Logo Wrapper -->
+                    </div>
+                    <div class="col-lg-9 position-static col-xl-8 d-none d-lg-block">
+                        <!-- Start Site Navigation -->
+                        <nav class="site-navigation">
+                            <ul class="main-nav nav">
+                                <li class="has-submenu active">
+                                    <a href="/home/index">Home</a>
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="#">Mall Info Booth</a>
+                                    <ul class="submenu-nav">
+                                        <li><a href="/home/about">About the Mall</a></li>
+                                        <li><a href="/home/Careerlist">Careers</a></li>
+                                        <li><a href="/home/faq">FAQs</a></li>
+                                        <li><a href="/home/photoalbum">Gallery</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="/home/BrandDirectory">Brand Directory</a>
+                                </li>
+                                @*<li><a href="service.html">Events & Offers</a></li>*@
+
+                                @*<li class="has-submenu">
+                                        <a href="blog.html">Feedback & Suggestions</a>
+                                        <ul class="submenu-nav">
+                                            <li>
+                                                <a href="blog-list.html">Blog List Style</a>
+                                            </li>
+                                            <li>
+                                                <a href="blog.html">Blog Grid Style</a>
+                                            </li>
+                                            <li><a href="blog-details.html">Blog Details</a></li>
+                                        </ul>
+                                    </li>*@
+                                <li><a href="/home/contact">Contact</a></li>
+                            </ul>
+                        </nav><!-- End Site Navigation -->
+                    </div><div class="col-4 col-lg-1">
+                        <!-- Start Search Box Area -->
+                        <div class="search-box-wrap">
+                            <ul class="search-box-inner nav">
+                                @*<li>
+                                        <a href="#" class="btn-search">
+                                            <i class="ion-search"></i>
+                                            <i class="ion-close"></i>
+                                        </a><div class="header-search-box">
+                                            <form action="#">
+                                                <div class="search-box-content">
+                                                    <label for="search" class="sr-only"></label>
+                                                    <input type="search" id="search" placeholder="type here and hit enter">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </li>*@
+                                <li class="d-lg-none"><a href="javascript:void(0)" class="btn-menu"><i class="ion-navicon"></i></a></li>
+                            </ul>
+                        </div>
+                        <!-- End Search Box Area -->
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Header Navigation Area -->
+    </header>
+    <!--== End Header Area ==-->
+
+    <div>
+        @RenderBody()
+    </div>
+    <!--== Start Footer Area ==-->
+    <footer class="footer-area bg-img" data-bg="/content/gencss/img/extra/footer_bg.png">
+        <div class="footer-widget-area">
+            <div class="container">
+                <div class="row mtn-40">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="widget-item">
+                            <h4 class="widget-title">About Us</h4>
+                            <div class="widget-body">
+                                <p>Vajra World, Gnangtok, Sikkim 737101</p><div class="social-icons mt-20"><a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i class="fa fa-twitter"></i></a> <a href="#"><i class="fa fa-linkedin"></i></a> <a href="#"><i class="fa fa-instagram"></i></a></div>
+                            </div>
+                        </div>
+                    </div><div class="col-sm-6 col-lg-3">
+                        <div class="widget-item">
+                            <h4 class="widget-title">Keep in touch</h4>
+                            <div class="widget-body">
+                                <div class="keepintouch">
+                                    <p><i class="ion-android-call"></i>099334 60123</p>
+                                    <p>
+                                        <i class="ion-email"></i><a href="mailto:your@example.com">your@example.com</a>
+                                    </p><p><i class="ion-map"></i>Baluwakhani, Gangtok, Sikkim 737101</p><p>
+                                        <i class="ion-printer">
+                                        </i>099334 60123
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><div class="col-sm-6 col-lg-3">
+                        <div class="widget-item">
+                            <h4 class="widget-title">Customer Care</h4>
+                            <div class="widget-body">
+                                <ul class="widget-list">
+                                    <li>
+                                        <a href="#">Feedback & Suggestions</a>
+                                    </li>
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li>
+                                        <a href="#">Mall Info</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Services</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Career</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div><div class="col-sm-6 col-lg-3">
+                        <div class="widget-item">
+                            <h4 class="widget-title">Working hours</h4>
+                            <div class="widget-body">
+                                <div class="working-hours">
+                                    <strong>Mon – Thurs:</strong> 10:00 AM – 8:00 PM<br>
+                                    <strong>Thurs – Fri:</strong> 10:00 AM – 7:00 PM<br>
+                                    <strong>Saturday:</strong> 12:00 - 17:30<br>
+                                    <hr><strong>Sunday:</strong> CLOSED
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <div class="copyright-content"><p class="mb-0">© Vajra World. All right reserved 2021.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--== End Footer Area ==-->
+    <!-- Scroll Top Button -->
+    <button class="btn-scroll-top">
+        <i class="ion-chevron-up"></i>
+    </button>
+    <!-- Start Responsive Menu Wrapper -->
+    <aside class="off-canvas-wrapper off-canvas-menu">
+        <div class="off-canvas-overlay"></div>
+        <div class="off-canvas-inner">
+            <!-- Start Off Canvas Content -->
+            <div class="off-canvas-content">
+                <div class="off-canvas-header">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="~/Content/gencss/img/logo-sm.png" alt="Logo">
+                        </a>
+                    </div><div class="close-btn">
+                        <button class="btn-close">
+                            <i class="ion-close">
+                            </i>
+                        </button>
+                    </div>
+                </div><div class="res-mobile-menu mobile-menu"></div>
+                <div class="mobile-menu res-site-config"></div>
+            </div>
+        </div>
+    </aside>
+    <!-- End Responsive Menu Wrapper -->
+    <!--== Start Quick View Modal ==-->
+    <script src="~/Content/gencss/js/app.min.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/mainJs")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

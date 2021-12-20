@@ -1,0 +1,55 @@
+﻿@model UppaiWeb.ViewModels.HomeVM
+<div id="DataGrid" class="col-md-12">
+    @if (Model.PartnerList.Count() > 0)
+    {
+        <div class="row">
+            @foreach (var item in Model.PartnerList)
+            {
+                <div class="col-md-6 mt-2 @item.BusinessCategoryID">
+                    <div class="col-md-12 card bg-light pt-4 pb-2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                @if (!string.IsNullOrEmpty(@item.ImagesUpload))
+                                {
+                                    <img src="@item.ImagesUpload" class="img-thumbnail" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/Image/PartnerDefault.jpg" class="img-thumbnail" />
+                                }
+                            </div>
+                            <div class="col-md-8">
+                                <h3>@item.Name</h3>
+                                <p><i class="fas fa-map-marker-alt"></i> @item.Address</p>
+                                <p><i class="fas fa-clock"></i> @item.OpeningTime - @item.ClosedTime</p>
+                                @if (@item.TodayIsClosed == "Yes")
+                                {
+                                    <p><i class="fas fa-lock"></i> Today: Closed</p>
+                                }
+                                else
+                                {
+                                    <p><i class="fas fa-lock-open"></i> Today: Open</p>
+                                }
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <a class="btn btn-sm hvr-hover pull-right" href="/home/menudetails/@item.PartnerID">Browse Menu</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <img src="~/Content/Image/no_record.png" /><br />
+            <span class="text-muted">No records available or your Filter record in not available..</span>
+        </div>
+    }
+</div>
+@*error message*@
+@*<div id="ErrMsg" style="display:none;">
+        <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+    </div>*@

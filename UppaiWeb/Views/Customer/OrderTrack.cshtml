@@ -1,0 +1,53 @@
+﻿@model UppaiWeb.ViewModels.OrderTrackVM
+@{
+    Layout = "~/Views/Shared/_LayoutGeneral.cshtml";
+}
+
+<link href="~/Content/GeneralStyle/css/TimeLineStyle.css" rel="stylesheet" />
+<div class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="menu-title">
+                    <h2>Order Tracking</h2>
+                    <ul class="custom_breadcrumb">
+                        <li><a href="/home/index"><i class="fa fa-home"></i> Home</a></li>
+                        <li><i class="fas fa-road"></i> Order Tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <strong>Order#: @Model.OrderDtls.OrderID <span>(From:@Model.OrderDtls.PartnerName)</span></strong>
+                        @if (Model.OrderTransList.Count() > 0)
+                        {
+                            <div class="timeline p-4 block mb-4">
+                                @foreach (var item in Model.OrderTransList)
+                                {
+                                    <div class="tl-item active">
+                                        <div class="tl-dot b-warning"></div>
+                                        <div class="tl-content">
+                                            <div class=""><b>@item.OrderStatus</b></div>
+                                            <div class="">@item.TransDescription</div>
+                                            <div class="tl-date">@item.TransDate.ToString("dd/MM/yyyy HH:mm")</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>

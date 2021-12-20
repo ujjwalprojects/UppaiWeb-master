@@ -1,0 +1,97 @@
+﻿@model UppaiWeb.Areas.MasterConfig.Models.BannerVM
+<div id="DataGrid">
+    @if (Model.BannerList.Count() > 0)
+    {
+        if (!string.IsNullOrEmpty(@ViewBag.SearchTerm))
+        {
+            <div class="col-md-12">
+                <i>
+                    Showing Results For Search Key : <b class="text-warning">@ViewBag.SearchTerm</b>
+                </i>
+            </div>
+        }
+        <div class="table-responsive p-2">
+            <table class="table table-striped table-condensed table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="vertical-align:middle;">Banner</th>
+                        <th class="text-center" style="vertical-align:middle;">Banner Details</th>
+                        <th class="text-center" style="vertical-align:middle;width:10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.BannerList)
+                    {
+                        <tr>
+                            <td style="vertical-align:middle;">
+                                <img src="@item.BannerThumbnail" class="img-fluid" />
+                            </td>
+                            <td style="vertical-align:middle;">
+                                <div class="row">
+                                    <div class="col-md-12 text-left">
+                                        <span>Name: <strong>@item.BannerTitle </strong></span>
+                                    </div>
+                                    <div class="col-md-12 text-left">
+                                        <span class="">Description: <strong>@item.BannerDesc</strong></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center" style="vertical-align:middle;">
+                                <a href="@Url.Action("EditBanner", "WebContent", new { id = @item.BannerID, Area = "MasterConfig" })" data-toggle="tooltip" data-placement="bottom" title="Edit" class="btn btn-sm btn-primary mb-2">
+                                    <i class="fas fa-fw fa-edit"></i> Edit
+                                </a>
+                                <form action="/MasterConfig/webcontent/DeleteBanner" method="post" data-otf-ajax="true" data-otf-target="#DataGrid">
+                                    @Html.AntiForgeryToken()
+                                    <a href="@Url.Action("DeleteBanner", "WebContent", new { id = item.BannerID,FilePath=item.BannerFilePath, Area = "MasterConfig" })" class="delete btn btn-sm btn-secondary mb-2" data-toggle="tooltip" data-placement="bottom" title="Disable User" data-record="@item.BannerTitle">
+                                        <i class="fas fa-fw fa-trash"></i>
+                                        <span>Delete</span>
+                                    </a>
+                                </form>
+                                <form action="/MasterConfig/webcontent/BannerPublish" method="post" data-otf-ajax="true" data-otf-target="#DataGrid">
+                                    @Html.AntiForgeryToken()
+
+                                    @if (item.IsPublished)
+                                    {
+                                        <a href="@Url.Action("BannerPublish","WebContent", new { id = item.BannerID})" class="status btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Click here for Publish Banner " data-record="@item.BannerTitle">
+                                            <i class="fas fa-fw fa-remove-format"></i>
+                                            <span>Un-Publish</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("BannerPublish","WebContent", new { id = item.BannerID})" class="status btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="Click here for Un-Publish Banner" data-record="@item.BannerTitle">
+                                            <i class="fas fa-fw fa-check"></i>
+                                            <span>Publish</span>
+                                        </a>
+                                    }
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="col-md-12">
+                <div class="ns-grid-pager row" data-otf-target="#DataGrid">
+                    <div class="hidden-xs col-md-3 col-sm-3">
+                        @Model.PagingInfo.TotalItems Record(s)
+                    </div>
+                    <div class="text-black-50 col-md-9 col-sm-9 ns-pagination" data-otf-target="#DataGrid" data-otf-actionlink="/masterconfig/webcontent/BannerList">
+                        @Html.PageLinks(Model.PagingInfo, x => Url.Action("BannerList", "webcontent", new { @Area = "masterconfig", PageNo = x, PageSize = Model.PagingInfo.ItemsPerPage }))
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <img src="~/Content/Image/no_record.png" /><br />
+            <span class="text-muted">No records available or your searched record in not available..</span>
+        </div>
+    }
+</div>
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>

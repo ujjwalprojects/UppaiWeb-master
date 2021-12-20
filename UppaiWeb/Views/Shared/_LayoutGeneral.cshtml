@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <!-- google font -->
+    @*<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">*@
+    <link rel="stylesheet" href="~/Content/GeneralStyle/css/bootstrap.min.css">
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="~/Content/GeneralStyle/css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="~/Content/GeneralStyle/css/responsive.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/Content/GeneralStyle/css/custom.css">
+    <link href="~/Content/fontawesome-free/css/all.css" rel="stylesheet" />
+    <link href="~/Content/GeneralStyle/css/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/AdminStyle/toastr.css" rel="stylesheet" />
+    @RenderSection("css", required: false)
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Start Main Top -->
+        <div class="main-top">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                        <div class="our-link">
+                            <ul>
+                                @*<li><a href="javascript:void(0)"><i class="fas fa-headset"></i>&nbsp; + 91 900 800 100</a></li>
+                                    <li><a href="javascript:void(0)"><i class="fas fa-envelope"></i>&nbsp; uppai@gmail.com</a></li>*@
+                                <li><a href="https://www.facebook.com/Uppaisikkim/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                @*<li><a href="javascript:void(0)"><i class="fa fa-youtube-play"></i></a></li>*@
+                                <li><a href="javascript:void(0)"><i class="fa fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="our-link pull-right">
+                            <ul>
+                                <li><a href="javascript:void(0)" class="text-dark">Partner With US</a></li>
+                                @if (!string.IsNullOrEmpty(@ViewBag.ProfileName))
+                                {
+                                    <li class="text-dark">Welcome <b>@ViewBag.ProfileName!</b></li>
+                                }
+                                else
+                                {
+                                    <li><a href="/Account/Login" class="text-dark">Login/Sign Up</a></li>
+                                }
+                            </ul>
+                        </div>
+                        @*<div class="login-box">
+                                <select id="basic" class="selectpicker show-tick form-control" data-placeholder="Sign In">
+                                    <option>Register Here</option>
+                                    <a href="/Account/Login">Sign In</a>
+                                    <a href="/Account/Login">Sign In</a>
+                                </select>
+                            </div>*@
+                        @*<div class="text-slid-box">
+                                <div id="offer-box" class="carouselTicker">
+                                    <ul class="offer-box">
+                                        <li>
+                                            <i class="fab fa-opencart"></i> 20% off Entire Purchase Promo code: offT80
+                                        </li>
+                                        <li>
+                                            <i class="fab fa-opencart"></i> 50% - 80% off on Vegetables
+                                        </li>
+                                        <li>
+                                            <i class="fab fa-opencart"></i> Off 10%! Shop Vegetables
+                                        </li>
+                                        <li>
+                                            <i class="fab fa-opencart"></i> Off 50%! Shop Now
+                                        </li>
+                                        <li>
+                                            <i class="fab fa-opencart"></i> Off 10%! Shop Vegetables
+                                        </li>
+                                        <li>
+                                            <i class="fab fa-opencart"></i> 50% - 80% off on Vegetables
+                                        </li>
+                                        <li>
+                                            <i class="fab fa-opencart"></i> 20% off Entire Purchase Promo code: offT30
+                                        </li>
+                                        <li>
+                                            <i class="fab fa-opencart"></i> Off 50%! Shop Now
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Main Top -->
+        <!-- Start Main Top -->
+        <header class="main-header">
+            <!-- Start Navigation -->
+            <nav class="navbar navbar-expand-lg  navbar-default bootsnav">
+                <div class="container">
+                    <!-- Start Header Navigation -->
+                    <div class="navbar-header">
+                        @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                                <i class="fa fa-bars"></i>
+                            </button>*@
+                        <a class="navbar-brand" href="/home/index"><img src="~/Content/Image/UppaiLogo.png" class="logo img-fluid" alt="Logo"></a>
+                    </div>
+                    <!-- End Header Navigation -->
+                    <!-- Start Atribute Navigation -->
+                    <div class="attr-nav" style="padding:0px 5px!important">
+                        <ul>
+                            @*<li class="search"><a href="#"><i class="fa fa-search"></i></a></li>*@
+                            <li class="">
+                                <a href="/Customer/CheckOut">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="badge" id="cartcount"></span>
+                                    @*<p class="d-none d-sm-block">My Cart</p>*@
+                                </a>
+                            </li>
+                            @if (!string.IsNullOrEmpty(@ViewBag.ProfileName))
+                            {
+                                <li class="side-menu" style="padding:0px 5px!important">
+                                    <a href="#">
+                                        <i class="fas fa-user"></i>
+                                    </a>
+                                </li>
+                            }
+
+
+                        </ul>
+                    </div>
+
+                </div>
+                <!-- Start Side Menu -->
+                <div class="side">
+                    <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+                    <li class="cart-box">
+                        <ul class="cart-list">
+                            <li>
+                                <h2 class=""><i class="fas fa-praying-hands"></i> Hi, @ViewBag.ProfileName</h2>
+                            </li>
+                            <li>
+                                <h6 class=""><a href="/customer/orderlist"><i class="fas fa-reorder"></i> Order List </a></h6>
+                            </li>
+                            <li>
+                                <h6 class=""><a href="/customer/addaddress"><i class="fas fa-address-book"></i> Addresses </a></h6>
+                            </li>
+                            <li>
+                                <h6 class=""><a href="#"><i class="fas fa-user-cog"></i> My Profile </a></h6>
+                            </li>
+                            <li>
+                                <form method="post" action="@Url.Action("logoff", "account", new { @Area = "" })" id="logOut">
+                                    @Html.AntiForgeryToken()
+                                    <h6 class="">
+                                        <a href="javascript:document.getElementById('logOut').submit()"><i class="fa fa-sign-out"></i> Sign Out </a>
+                                    </h6>
+                                    @*<a class="" href="javascript:document.getElementById('logOut').submit()">
+                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Logout
+                                        </a>*@
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </div>
+                <!-- End Side Menu -->
+            </nav>
+            <!-- End Navigation -->
+
+        </header>
+        <!-- End Main Top -->
+        <!-- Begin Page Content -->
+        @RenderBody()
+        <!-- Start Footer  -->
+        <footer>
+            <div class="footer-main">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div class="footer-widget">
+                                <h4>Business Time</h4>
+                                <ul class="list-time">
+                                    <li>Monday - Saturday: 09.00am to 08.00pm</li>
+                                    <li>Sunday: 10.00am to 08.00pm</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div class="footer-link">
+                                <h4>Important Link</h4>
+                                <ul>
+                                    <li><a href="@Url.Action("cmscontent","home",new { Area="",Title="About Us"})">About Us</a></li>
+                                    <li><a href="@Url.Action("cmscontent","home",new { Area="",Title="Customer Service"})">Customer Service</a></li>
+                                    <li><a href="@Url.Action("cmscontent","home",new { Area="",Title="Terms and Conditions"})">Terms and Conditions</a></li>
+                                    <li><a href="@Url.Action("cmscontent","home",new { Area="",Title="Privacy Policy"})">Privacy Policy</a></li>
+                                    <li><a href="@Url.Action("cmscontent","home",new { Area="",Title="Delivery Information"})">Delivery Information</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div class="footer-link-contact">
+                                <h4>Contact Us</h4>
+                                <ul>
+                                    <li>
+                                        <p><i class="fas fa-map-marker-alt"></i>Address: Indira Bypass Road, Near KBT Fuels, Sungava, Gangtok, Sikkim 737101</p>
+                                    </li>
+                                    <li>
+                                        <p><i class="fas fa-phone-square"></i>Phone: <a href="tel:+1-888705770">+91 12345 67890</a></p>
+                                    </li>
+                                    <li>
+                                        <p><i class="fas fa-envelope"></i>Email: <a href="mailto:uppai@gmail.com">uppai@gmail.com</a></p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        @*<hr />*@<hr />
+
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer  -->
+        <!-- Start copyright  -->
+        <div class="footer-copyright">
+            <p class="footer-company">
+                All Rights Reserved. &copy; @DateTime.Now.Year Uppai Delivery
+            </p>
+        </div>
+        <!-- End copyright  -->
+    </div>
+    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+    <div class="toast-container"></div>
+    <div id="ajaxLoading" class="fade in" style="background-color: rgb(0, 0, 0); bottom: 0px; left: 0px; position: fixed; right: 0px; top: 0px; z-index: 10000; opacity: 0.5; display: none;max-width: 200px;max-height: 160px;">
+        <div class="text-center panel center-div mt-5">
+            <div class="panel-body">
+                <img src="~/Content/Image/loading.gif" />
+                <p class="m-2 text-white"><b>Please wait...</b></p>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-styled" id="myErroMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-md-12">
+                        <button type="button" class="close color-white" data-dismiss="modal" aria-label="Close" onclick="CloseMyModal()"><span aria-hidden="true">&times;</span></button>
+                        <i class="fa fa-info-circle color-white float-left"></i> <span class="modal-title color-white" id="myErroModalLabel"></span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <h5 id="Msg" class="text-center"></h5>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-offset-2 col-md-10 text-right" style="padding-right: 0;">
+                        <input type="button" id="myErroMsgModalNoButton" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="CloseMyModal()" value="Cancel" />
+                        <input type="button" id="myErroMsgModalYesButton" value="Yes" class="btn btn-info btn-sm invisible" onclick="OkMyModal()" />
+                    </div>
+                </div>
+                <input type="hidden" id="eventSender" name="name" value=" " />
+            </div>
+        </div>
+    </div>
+
+    @*error message*@
+    @*<div id="ErrMsg" style="display:none;">
+            <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData[" ErrMsg"]" />
+        </div>*@
+
+    <!-- ALL JS FILES -->
+    <script src="~/Content/GeneralStyle/js/jquery-3.2.1.min.js"></script>
+    <script src="~/Content/GeneralStyle/js/popper.min.js"></script>
+    <script src="~/Content/GeneralStyle/js/bootstrap.min.js"></script>
+    <!-- ALL PLUGINS -->
+    <script src="~/Content/GeneralStyle/js/jquery.superslides.min.js"></script>
+    <script src="~/Content/GeneralStyle/js/bootstrap-select.js"></script>
+    <script src="~/Content/GeneralStyle/js/inewsticker.js"></script>
+    <script src="~/Content/GeneralStyle/js/bootsnav.js"></script>
+    <script src="~/Content/GeneralStyle/js/images-loded.min.js"></script>
+    <script src="~/Content/GeneralStyle/js/isotope.min.js"></script>
+    <script src="~/Content/GeneralStyle/js/owl.carousel.min.js"></script>
+    <script src="~/Content/GeneralStyle/js/baguetteBox.min.js"></script>
+    <script src="~/Scripts/GenCustomAjax.js"></script>
+    <script src="~/Content/GeneralStyle/js/custom.js"></script>
+    <script src="~/Scripts/toastr.js"></script>
+    @*<script src="~/Content/GeneralStyle/js/form-validator.min.js"></script>*@
+    @*<script src="~/Content/GeneralStyle/js/contact-form-script.js"></script>*@
+
+    @*<script src="~/Content/GeneralStyle/js/contact-form-script.js"></script>*@
+    @*<script src="~/Content/GeneralStyle/js/form-validator.min.js"></script>*@
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            var cartcountfun = function () {
+                if ('@ViewBag.LayoutCart' != 0 || '@ViewBag.LayoutCart' != "0") {
+                    $('#cartcount').text('@ViewBag.LayoutCart');
+                }
+            }
+            cartcountfun();
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+    <!-- endinject -->
+</body>
+</html>

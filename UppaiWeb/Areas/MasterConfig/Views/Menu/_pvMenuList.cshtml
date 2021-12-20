@@ -1,0 +1,162 @@
+﻿@model UppaiWeb.Areas.MasterConfig.Models.MenuVM
+@{ int i = 1;}
+<div id="DataGrid">
+    @if (Model.MenuList.Count() > 0)
+    {
+        if (!string.IsNullOrEmpty(@ViewBag.SearchTerm))
+        {
+            <div class="col-md-12">
+                <i>
+                    Showing Results For Search Key : <b class="text-warning">@ViewBag.SearchTerm</b>
+                </i>
+            </div>
+        }
+        <div class="table-responsive p-2">
+            <table class="table table-striped table-condensed table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="vertical-align:middle;width:25%">Menu Image</th>
+                        <th class="text-center" style="vertical-align:middle;width:60%">Menu Details</th>
+                        <th class="text-center" style="vertical-align:middle;width:10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.MenuList)
+                    {
+                        <tr>
+                            <td class="text-center" style="vertical-align:middle">
+                                @if (item.ImageThumbnail == null || item.ImageThumbnail == "")
+                                {
+                                    <img src="~/Content/Image/MenuDefault.png" alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 100px; height: 100px; vertical-align: middle" />
+                                }
+                                else
+                                {
+                                    <img src="@item.ImageThumbnail" alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 100px; height: 100px; vertical-align: middle" />
+                                }
+                                @*<br />*@
+                                @*<span class="">Rating: <strong>@item.CustomerRating</strong></span>*@
+                            </td>
+                            <td style="vertical-align:middle;">
+                                <div class="row">
+                                    <div class="col-md-11 text-left">
+                                        <span class="">
+                                            Name:
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <strong>@item.MenuName </strong><span class="text-info">(From @item.AddedBy)</span>
+                                            }
+                                            else
+                                            {
+                                                <strong>@item.MenuName </strong>
+                                            }
+                                        </span>
+                                    </div>
+                                    <div class="col-md-1 text-right">
+                                        @if (item.MenuType == "Veg Menu")
+                                        {
+                                            <span class=""><img src="~/Content/Image/VegIcon.png" class="img-thumbnail" style="width: 20px; height: 20px; vertical-align: super" /></span>
+                                        }
+                                        else if (item.MenuType == "Non-Veg Menu")
+                                        {
+                                            <span class=""><img src="~/Content/Image/NonVegIcon.png" class="img-thumbnail" style="width: 20px; height: 20px; vertical-align: super" /></span>
+                                        }
+                                        else { }
+                                    </div>
+                                    <div class="col-md-6 text-left">
+                                        <span class="">Category Name: <strong>@item.ItemCategoryName</strong></span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        @if (item.IsAvailable == true)
+                                        {
+                                            <span>Menu Available: </span><span class="badge badge-success"> Yes </span>
+                                        }
+                                        else
+                                        {
+                                            <span>Menu Available: </span><span class="badge badge-danger"> No </span>
+                                        }
+                                    </div>
+
+                                    @if (item.DiscountPrice != null)
+                                    {
+                                        <div class="col-md-4 text-left">
+                                            <span class="lineovertext">Price: <strong>@item.OrginalPrice.ToString("0.00")</strong></span>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <span class="">Discount Price: <strong>@item.DiscountPrice.Value.ToString("0.00")</strong></span>
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                            @if (!string.IsNullOrEmpty(item.ServedUpto))
+                                            {
+                                                <span class="">Served Upto: <strong>@item.ServedUpto</strong></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="">Served Upto: <strong>N/A</strong></span>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-6 text-left">
+                                            <span class="">Price: <strong>@item.OrginalPrice.ToString("0.00")</strong></span>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            @if (!string.IsNullOrEmpty(item.ServedUpto))
+                                            {
+                                                <span class="">Served Upto: <strong>@item.ServedUpto</strong></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="">Served Upto: <strong>N/A</strong></span>
+                                            }
+                                        </div>
+                                    }
+                                    <div class="col-md-12">
+                                        <span class="text-left">Description: <strong>@item.Description</strong></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center" style="vertical-align:middle;">
+                                <a href="@Url.Action("EditMenu", "Menu", new { id = @item.MenuID, Area = "MasterConfig" })" data-toggle="tooltip" data-placement="bottom" title="Edit" class="btn btn-sm btn-primary mb-2">
+                                    <i class="fas fa-fw fa-edit"></i> Edit
+                                </a>
+                                <br />
+                                <form action="/MasterConfig/Menu/DeleteMenu" method="post" data-otf-ajax="true" data-otf-target="#DataGrid">
+                                    @Html.AntiForgeryToken()
+                                    <a href="@Url.Action("DeleteMenu", "Menu", new { id = item.MenuID, Area = "MasterConfig" })" class="delete btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Delete Menu" data-record="@item.MenuName">
+                                        <i class="fas fa-fw fa-trash"></i>
+                                        <span>Delete</span>
+                                    </a>
+                                </form>
+                            </td>
+
+                        </tr>
+                        i = i + 1;
+                    }
+                </tbody>
+            </table>
+            <div class="col-md-12">
+                <div class="ns-grid-pager row" data-otf-target="#DataGrid">
+                    <div class="hidden-xs col-md-3 col-sm-3">
+                        @Model.PagingInfo.TotalItems Record(s)
+                    </div>
+                    <div class="text-black-50 col-md-9 col-sm-9 ns-pagination" data-otf-target="#DataGrid" data-otf-actionlink="/masterconfig/menu/MenuList">
+                        @Html.PageLinks(Model.PagingInfo, x => Url.Action("MenuList", "menu", new { @Area = "masterconfig", PageNo = x, PageSize = Model.PagingInfo.ItemsPerPage }))
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <img src="~/Content/Image/no_record.png" /><br />
+            <span class="text-muted">No records available or your searched record in not available..</span>
+        </div>
+    }
+</div>
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>

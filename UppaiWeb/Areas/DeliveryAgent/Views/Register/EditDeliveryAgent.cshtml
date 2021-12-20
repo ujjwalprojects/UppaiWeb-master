@@ -1,0 +1,225 @@
+﻿@model UppaiWeb.Areas.DeliveryAgent.Models.DeliveryAgentEdit
+@{
+    ViewBag.Title = "Delivery Agent Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    List<string> DeliveryType = new List<string> { "Rider", "Worker" };
+}
+<link href="~/Content/cropper/cropper.min.css" rel="stylesheet" />
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Delivery Agent Management
+            </div>
+        </div>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="page-title-actions mt-3"> <a href="/DeliveryAgent/register/DeliveryAgentlist" class="btn btn-danger"> <i class="fa fa-th-list"></i> Delivery Agent List</a></div>
+    }
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-bicycle"></i> Delivery Agent Management <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>Delivery Agent Edit</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        @using (Html.BeginForm("EditDeliveryAgent", "Register", new { @area = "DeliveryAgent" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.DeliveryAgentDetails.Id)
+            @Html.HiddenFor(m => m.DeliveryAgentDetails.DeliveryAgentID)
+            @Html.HiddenFor(m => m.DeliveryAgentDetails.MobileNo)
+            @Html.HiddenFor(m => m.DeliveryAgentDetails.IsActive)
+            @Html.HiddenFor(m => m.RoleName)
+            <div class="col-md-12 mb-3">
+                <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+            </div>
+            <div class="alert alert-secondary">
+                <h2 class="text-center">Delivery Agent INFORMATION</h2>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-9 p-0">
+                            <div class="form-group col-md-12">
+                                <label class="control-label required">User Name/Phone No.</label>
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @autocomplete = "off", @Disabled = "Disabled" })
+                                @Html.ValidationMessageFor(m => m.UserName)
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label required">Role Name</label>
+                                @Html.TextBoxFor(m => m.RoleName, new { @class = "form-control", @autocomplete = "off", @Disabled = "Disabled" })
+                                @Html.ValidationMessageFor(m => m.RoleName)
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center p-0">
+                            <div id="imgPhotoThumb" style="margin-left: auto; margin-right: auto;">
+                                @if (Model.DeliveryAgentDetails.ImagesUpload == null || Model.DeliveryAgentDetails.ImagesUpload == "")
+                                {
+                                    <img src="~/Content/Image/no-thumb.png" alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 140px; height: 140px; vertical-align: middle" />
+                                }
+                                else
+                                {
+                                    <img src="@Model.DeliveryAgentDetails.ImagesUpload " alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 140px; height: 140px; vertical-align: middle" />
+                                }
+                            </div>
+                            <div style="width: 100%; margin-top: 10px;">
+                                <button type="button" style="width:150px;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#photo-modal">
+                                    Upload Photo
+                                </button>
+                            </div>
+                            @Html.TextAreaFor(m => m.DeliveryAgentDetails.ImagesUpload, new { @class = "d-none", @id = "profilePhotoThumb" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Delivery Agent Name</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.Name, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Delivery Agent Name" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.Name)
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label ">Delivery Agent Email</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.EmailID, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Delivery Agent Email" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.EmailID)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Delivery Agent Type</label>
+                            @Html.DropDownListFor(m => m.DeliveryAgentDetails.DeliveryType, new SelectList(DeliveryType), "----Select Delivery Type----", new { @class = "form-control", @placeholder = "Select Delivery Type" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.DeliveryType)
+                        </div>
+                        @*<div class="form-group col-md-6">
+                            <label class="control-label required">Contact Number</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.MobileNo, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Contact Number" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.MobileNo)
+                        </div>*@
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Alternate Mobile No.</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.AlternateMobileNo, new { @class = "form-control", @placeholder = "Enter Alternate Mobile No." })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.AlternateMobileNo)
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label class="control-label required">Delivery Agent Address</label>
+                            @Html.TextAreaFor(m => m.DeliveryAgentDetails.Address, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Address" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.Address)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-secondary">
+                <h2 class="text-center">DeliveryAgent BANK DETAILS</h2>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="control-label">A/C Holder Name</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.ACHolderName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter AC Holder Name" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.ACHolderName)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Bank Name</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.BankName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Bank Name" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.BankName)
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label ">IFSC Code</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.IFSCCode, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter IFSC Code" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.IFSCCode)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Account No.</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.AccountNo, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Account Number" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.AccountNo)
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Branch Name</label>
+                            @Html.TextBoxFor(m => m.DeliveryAgentDetails.BankBranch, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Bank Branch Name" })
+                            @Html.ValidationMessageFor(m => m.DeliveryAgentDetails.BankBranch)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="action-div action-style">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="/DeliveryAgent/register/DeliveryAgentlist" class="btn btn-secondary btn-user">Back To List</a>
+                }
+                else
+                {
+                    <a href="/DeliveryAgent/register/myprofile" class="btn btn-secondary btn-user">Back To List</a>
+                }
+
+                <button type="submit" class="btn btn-success btn-user float-right"><i class="fa fa-save"></i> Save</button>
+                <div class="clearfix"></div>
+            </div>
+        }
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+<div class="modal fade" id="photo-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choose Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="avatar-form" action="#" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="avatar-body row m-0">
+                        <div class="col-md-8" style="padding: 0">
+                            <div class="well well-sm well-table-header clearfix">
+                                <div class="img-container">
+                                    <img src="#" class="rounded-circle">
+                                    <span id="ImageSpan" style="font-size: 12pt; font-weight: bold; ">Choose photo...</span>
+                                </div>
+                            </div>
+                            <div class="well well-sm well-table-header clearfix">
+                                <div class="col-md-12 col-sm-12" style="padding: 0">
+                                    <div class="btn btn-sm btn-primary" for="inputImage" title="Upload image file">
+                                        <input id="inputImage" class="" name="file" type="file" accept="image/*" data-toggle="tooltip" title="Upload image" onchange="ShowFileMsg()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="padding-right: 0">
+                            <div class="well well-sm well-table-header" style="text-align:center; height:185px; width:161px;">
+                                <span style="font-size: 13pt; font-weight: bold;">Preview</span>
+                                <div id="dataURLView" style="margin-left: auto; margin-right: auto; width: 126px;">
+                                    <img src="~/Content/Image/no-thumb.png" class="rounded-circle" style="width: 126px; height: 126px;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="well well-sm clearfix">
+                        <div class="col-md-12 col-sm-12 text-right" style="padding-right: 0">
+                            <button class="btn btn-danger" id="getDataURL" data-toggle="tooltip" type="button" title="Crop Image" style="pointer-events: none; opacity: .3">Crop Image</button>
+                            <button class="btn btn-primary" data-dismiss="modal" type="button" id="DoneBtn">Done</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/cropper/cropper.min.js"></script>
+    <script src="~/Content/cropper/cropper-setimage.js"></script>
+
+}
+

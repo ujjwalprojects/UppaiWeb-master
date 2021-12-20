@@ -1,0 +1,101 @@
+﻿/********************* Page Header **********************/
+.page-title-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 15px 8px 2px;
+    text-align: left;
+    /*border-bottom: #fcfa88 solid 2px;*/
+}
+
+.page-title-icon {
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    margin: 0 20px 0 0;
+    background-image: linear-gradient(120deg, #fff 0%, #eee 100%) !important;
+    box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03),0 0.9375rem 1.40625rem rgba(4,9,20,0.03),0 0.25rem 0.53125rem rgba(4,9,20,0.05),0 0.125rem 0.1875rem rgba(4,9,20,0.03);
+    border-radius: .25rem;
+    width: 50px;
+    height: 50px;
+    line-height: 55px;
+    color: #979797;
+    font-size: 22pt;
+}
+
+.page-title-heading {
+    font-size: 2.25rem;
+    font-weight: 400;
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+.page-title-main-text {
+    width: 100%;
+    color: #3c3926;
+}
+.page-title-actions {
+    margin-left: auto;
+}
+
+a:focus {
+    outline: none;
+}
+/***********************************************************/
+/***************** User Grid Style *******************/
+.image-thumb {
+    display: block;
+    padding: 4px;
+    margin-right: 20px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}
+
+.grid-user-info {
+    align-items: center;
+}
+
+.grid-button {
+    width: 80px;
+    margin: 5px 0;
+}
+
+/************************* Cropper ************************/
+/*.img-container {
+    min-height: 100px;
+    background-image: url('Image/img-bg.png');
+    background-repeat: repeat;
+}*/
+
+/***************** Image Upload ****************/
+/*.image-preview {
+    margin-bottom: 5px;
+    height: 150px;
+    width: 130px;
+}
+
+.cropper-container {
+    top: 0 !important;
+}
+
+.cropper-preview {
+    margin-left: auto;
+    margin-right: auto;
+    height: 140px;
+    width: 120px;
+    overflow: hidden;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    background-image: url('Image/img-bg.png');
+    background-repeat: repeat;
+}*/
+/*******************************************************/
+
+

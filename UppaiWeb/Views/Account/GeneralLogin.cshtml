@@ -1,0 +1,167 @@
+﻿@model UppaiWeb.Models.LoginModel
+@{
+    ViewBag.Title = "Login";
+   
+}
+<link href="~/Content/GeneralStyle/css/GeneralLogin.css" rel="stylesheet" />
+<div class="page-wrapper bg-blue">
+    <div class="wrapper wrapper--w768 pt-5">
+        <div class="card card-2">
+            <div class="card-heading" style="background:url(../Content/Image/bg-heading-02.jpg)no-repeat top left">
+            </div>
+            <div class="card-body">
+                <h2 class="title">Login</h2>
+                <form class="user" method="post" action="/account/GeneralLogin">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-group">
+                        <div class="input-group mb-1">
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "input--style-2", autocomplete = "off", @placeholder = "User Name" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-1">
+                            @Html.PasswordFor(m => m.Password, new { @class = "input--style-2", @placeholder = "Password", @id = "Password" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <div class="alert-danger text-center">
+                                @Html.ValidationMessage("ErrorMsg")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-2 mt-2">
+                        @*<button class="btn btn--radius btn--green" type="submit">Search</button>*@
+                        <button class="btn btn--radius btn--green" type="submit" id="LogIn">Log in</button>
+                        <input type="submit" id="LogInBtn" class="btn d-none" hidden />
+                    </div>
+                    <div class="mt-3">
+                        <div class="pull-left">
+                            <span>
+                                Not a Member? <a href="/account/register">Register</a>
+                            </span>
+                        </div>
+                        <div class="pull-left">
+                            <a href="/home/index">Go to Home Page</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+
+
+@*<div class="row justify-content-center" style="margin-top:90px!important">
+        <div class="container h-100">
+            <div class="d-flex justify-content-center h-100">
+                <div class="Login_card">
+                    <div class="d-flex justify-content-center">
+                        <div class="brand_logo_container">
+                            <img src="~/Content/Image/logo.png" class="brand_logo" alt="Logo">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center form_container-mt">
+                        <form class="user" method="post" action="/account/Login">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control  form-control-user", autocomplete = "off", @placeholder = "UserName" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                    </div>
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-user", @placeholder = "Password", @id = "Password" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <div class="alert-danger text-center">
+                                    @Html.ValidationMessage("ErrorMsg")
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck">
+                                    <label class="custom-control-label" for="customCheck">Remember me</label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center login_container">
+                                <button class="btn login_btn" type="submit" id="LogIn">Log in</button>
+                                <input type="submit" id="LogInBtn" class="btn hidden" hidden />
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="pull-left">
+                            <a href="/account/ForgotPassword">Forgot your password?</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/home/index" class="">Back to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/CryptoJS%20v3.1.2/rollups/aes.js"></script>
+    <script src="~/Scripts/CryptoJS%20v3.1.2/components/core-min.js"></script>
+    <script src="~/Scripts/CryptoJS%20v3.1.2/components/enc-utf16-min.js"></script>
+    <script type="text/javascript">
+        $('#LogIn').click(function () {
+            var txtpassword = $('#Password').val();
+            if (txtpassword != "") {
+                var key = CryptoJS.enc.Utf8.parse('8080808080808080');
+                var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
+                var pass = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(txtpassword), key,
+                    {
+                        keySize: 128 / 8,
+                        iv: iv,
+                        mode: CryptoJS.mode.CBC,
+                        padding: CryptoJS.pad.Pkcs7
+                    });
+                $('#Password').val(pass);
+                $('#LogInBtn').click();
+            }
+            else {
+                $('#LogInBtn').click();
+            }
+        });
+
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                $('#LogIn').click();
+                return false;
+            }
+        });
+
+        $(document).ready(function () {
+            function disableBack() { window.history.forward() }
+
+            window.onload = disableBack();
+            window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+        });
+
+    </script>
+}

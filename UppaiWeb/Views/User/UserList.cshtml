@@ -1,0 +1,66 @@
+﻿@model UppaiWeb.Models.UserListVM
+@{
+    ViewBag.Title = "UserList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/AdminStyle/ns-pager-style.css" rel="stylesheet" />
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                User Management
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/user/register" class="btn btn-danger">Add User</a></div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-users-cog"></i> User Management <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>User List</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        <div class="row alert-danger p-3 rounded">
+            <div class="col-md-10 float-left">
+                <form method="get" action="/user/userlist" data-otf-ajax="true" data-search="true" data-otf-target="#DataGrid">
+                    <div class="input-group">
+                        <div class="input-group">
+                            <input type="text" name="searchTerm" class="form-control" id="inputsearch" placeholder="Search By Name/Email..." />
+                            <button class="btn btn-danger" type="submit" id="search"><i class="fa fa-fw fa-search"></i>  Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-2 float-right">
+                <a href="/user/userlist" class="btn btn-success clear-result d-none" id="clear">
+                    <i class="fa fa-remove"></i> Clear Result
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    @*<hr />*@
+    @Html.Partial("_pvUserList", Model)
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $("#search").on("click", function (e) {
+                if ($("#inputsearch").val() != "") {
+                    $("#clear").removeClass("d-none");
+                }
+                else {
+                    $("#clear").addClass("d-none");
+                }
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,181 @@
+﻿@model UppaiWeb.Models.UserRegisterModel
+@using CaptchaMvc.HtmlHelpers
+@{
+    ViewBag.Title = "Register";
+}
+@Scripts.Render("~/bundles/jquery")
+<style>
+    .mt_-25px {
+        margin-top: -25px !important;
+    }
+</style>
+<link href="~/Content/GeneralStyle/css/GeneralLogin.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/Content/GeneralStyle/css/style.css">
+<link rel="stylesheet" href="~/Content/GeneralStyle/css/responsive.css">
+<div class="page-wrapper bg-blue">
+    <div class="wrapper wrapper--w768 pt-4">
+        <nav class="navbar navbar-expand-lg navbar-default bootsnav on no-full">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/home/index"><img src="/Content/Image/UppaiLogo.png" class="logo img-fluid" alt="Logo"></a>
+                </div>
+                <div class="attr-nav" style="padding:0px 5px!important">
+                    <ul>
+                        <li class="">
+                            <a href="/home/index">
+                                <i class="fas fa-home" title="Go To Home Page"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="card card-2">
+            @*<div class="card-heading" style="background:url(../Content/Image/bg-heading-02.jpg)no-repeat top left">
+                </div>
+                <div class="card-heading text-center" style="background:#000">
+                    <img src="~/Content/Image/UppaiLogo.png" style="vertical-align:middle" />
+                </div>*@
+            <div class="card-body">
+                <h2 class="page_title">User's Sign Up</h2>
+                <form class="user" method="post" action="/account/register">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(m => m.RoleName)
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-0">
+                                <div class="input-group mb-0">
+                                    @Html.TextBoxFor(m => m.ProfileName, new { @class = "input--style-2", autocomplete = "off", @placeholder = "Profile Name" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.ProfileName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-0">
+                                <div class="input-group mb-0">
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "input--style-2", autocomplete = "off", @placeholder = "User Name" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-0">
+                                <div class="input-group mb-0">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "input--style-2", @placeholder = "Email ID (Optional)", @id = "Phone No." })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-0">
+                                <div class="input-group mb-0">
+                                    @Html.TextBoxFor(m => m.PhoneNo, new { @class = "input--style-2", @placeholder = "Contect No.", @id = "Phone No." })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.PhoneNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group mb-0">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "input--style-2", @placeholder = "Password", @id = "Pass" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group mb-0">
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "input--style-2", @placeholder = "Confirm Password", @id = "ConPass" })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 text-center">
+                            <div class="form-group mt-0 mb-0" id="captchadiv">
+                                @Html.MathCaptcha()
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2 mt_-25px">
+                            <div class="form-group mb-0">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.CheckBox("agree", new { @class = "custom-control-input", @id = "customCheck" })
+                                    <label class="custom-control-label" for="customCheck">I agree to Uppai's<a href="/account/generallogin"> T&amp;C</a></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn--radius btn--green" type="submit">Register</button>
+                    </div>
+                    <div class="mt-3">
+                        <div class="pull-left">
+                            <span>Already a User? <a href="/account/login">Login</a></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById('CaptchaInputText').classList.add('mt-2');
+            document.getElementById('CaptchaInputText').classList.add('form-control');
+            document.getElementById('CaptchaImage').classList.add('mt_-25px');
+            $('#CaptchaInputText').attr('placeholder', "Type Answer here");
+        });
+
+    </script>
+
+}
+
+
+@*<h2>@ViewBag.Title.</h2>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <h4>Create a new account.</h4>
+        <hr />
+        @Html.ValidationSummary()
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ProfileName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.ProfileName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.MobileNo, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.MobileNo, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.RoleName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.RoleName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Register" />
+            </div>
+        </div>
+    }*@
+
+

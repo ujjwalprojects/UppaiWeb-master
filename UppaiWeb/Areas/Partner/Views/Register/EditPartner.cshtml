@@ -1,0 +1,281 @@
+﻿@model UppaiWeb.Areas.Partner.Models.PartnerEdit
+@{
+    ViewBag.Title = "Partner Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 0;
+    //bool ChkBoxTiming = Model.PartnerDetails.OpeningTime != null ? true : false;
+}
+<link href="~/Content/cropper/cropper.min.css" rel="stylesheet" />
+<link href="~/Content/datetimepicker/Gijgo.Timepicker.css" rel="stylesheet" />
+@*<link href="~/Content/datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" />*@
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Partner Management
+            </div>
+        </div>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="page-title-actions mt-3"> <a href="/partner/register/partnerlist" class="btn btn-danger"> <i class="fa fa-th-list"></i> Partner List</a></div>
+    }
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-handshake"></i> Partner Management <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>Partner Edit</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        @using (Html.BeginForm("EditPartner", "Register", new { @area = "Partner" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.PartnerDetails.Id)
+            @Html.HiddenFor(m => m.PartnerDetails.PartnerID)
+            @Html.HiddenFor(m => m.PartnerDetails.EmailID)
+            @Html.HiddenFor(m => m.PartnerDetails.IsActive)
+            @Html.HiddenFor(m => m.RoleName)
+            <div class="col-md-12 mb-3">
+                <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+            </div>
+            <div class="alert alert-secondary">
+                <h2 class="text-center">PARTNER INFORMATION</h2>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-9 p-0">
+                            <div class="form-group col-md-12">
+                                <label class="control-label required">Email/User Name</label>
+                                @Html.TextBoxFor(m => m.PartnerDetails.EmailID, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Partner Name", @Disabled = "Disabled" })
+                                @Html.ValidationMessageFor(m => m.PartnerDetails.EmailID)
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label required">Role Name</label>
+                                @Html.TextBoxFor(m => m.RoleName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Partner Email ID", @Disabled = "Disabled" })
+                                @Html.ValidationMessageFor(m => m.RoleName)
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center p-0">
+                            <div id="imgPhotoThumb" style="margin-left: auto; margin-right: auto;">
+                                @if (Model.PartnerDetails.ImagesUpload == null || Model.PartnerDetails.ImagesUpload == "")
+                                {
+                                    <img src="~/Content/Image/no-thumb.png" alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 140px; height: 140px; vertical-align: middle" />
+                                }
+                                else
+                                {
+                                    <img src="@Model.PartnerDetails.ImagesUpload " alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 140px; height: 140px; vertical-align: middle" />
+                                }
+                            </div>
+                            <div style="width: 100%; margin-top: 10px;">
+                                <button type="button" style="width:150px;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#photo-modal" id="btnprofilephoto">
+                                    Upload Profile Photo
+                                </button>
+                            </div>
+                            @Html.TextAreaFor(m => m.PartnerDetails.ImagesUpload, new { @class = "d-none", @id = "profilePhotoThumb" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Partner Name</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.Name, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Partner Name" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.Name)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Business Category Name</label>
+                            @Html.DropDownListFor(m => m.PartnerDetails.BusinessCategoryID, new SelectList(Model.BCategoryDDList, "BusinessCategoryID", "BusinessCategoryName"), "----Select Business Category----", new { @class = "form-control", @placeholder = "Select Business Category" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.BusinessCategoryID)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Contact Number</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.MobileNo, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Contact Number" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.MobileNo)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Alternate Contact No.</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.AlternateMobileNo, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Alternate Contact Number" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.AlternateMobileNo)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label required">Opening Time</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.OpeningTime, new { @class = "form-control timepicker", @autocomplete = "off", @placeholder = "Enter Opening Time", @id = "OpenTime" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.OpeningTime)
+                        </div>
+                        <div class="form-group col-md-6 ">
+                            <label class="control-label required">Closing Time</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.ClosedTime, new { @class = "form-control timepicker", @autocomplete = "off", @placeholder = "Enter Closing Time", @id = "ClosedTime" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.ClosedTime)
+                        </div>
+                       
+                        <div class="col-md-12 alert alert-secondary">
+                            <strong class="text-center">Operational Days</strong>
+                            <div class="row mt-2">
+                                @foreach (var item in Model.OperationalDays)
+                                {
+                                    <div class="form-group col-md-3">
+                                        @Html.HiddenFor(m => Model.OperationalDays[i].DayNo)
+                                        @Html.HiddenFor(m => Model.OperationalDays[i].DayName)
+                                        <label>@Html.CheckBoxFor(m => Model.OperationalDays[i].IsSelected) @item.DayName</label>
+                                    </div>
+                                    i++;
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Latitude</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.Latitude, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Latitude value", @id = "lat" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.Latitude)
+                        </div>
+                        <div class="form-group col-md-6 ">
+                            <label class="control-label required">Longitute</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.Longitude, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Longitude value", @id = "lng" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.Longitude)
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label required">Partner Address</label>
+                            @Html.TextAreaFor(m => m.PartnerDetails.Address, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Address" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.Address)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-secondary">
+                <h2 class="text-center">PARTNER BANK DETAILS</h2>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="control-label">A/C Holder Name</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.ACHolderName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter AC Holder Name" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.ACHolderName)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Bank Name</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.BankName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Bank Name" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.BankName)
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label ">IFSC Code</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.IFSCCode, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter IFSC Code" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.IFSCCode)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Account No.</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.AccountNo, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Account Number" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.AccountNo)
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Branch Name</label>
+                            @Html.TextBoxFor(m => m.PartnerDetails.BankBranch, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Bank Branch Name" })
+                            @Html.ValidationMessageFor(m => m.PartnerDetails.BankBranch)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="action-div action-style">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="/partner/register/partnerlist" class="btn btn-secondary btn-user">Back To List</a>
+                }
+                else
+                {
+                    <a href="/partner/register/myprofile" class="btn btn-secondary btn-user">Back To List</a>
+                }
+
+                <button type="submit" class="btn btn-success btn-user float-right"><i class="fa fa-save"></i> Save</button>
+                <div class="clearfix"></div>
+            </div>
+        }
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+<div class="modal fade" id="photo-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choose Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="avatar-form" action="#" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+                    <div class="avatar-body row m-0">
+                        <div class="col-md-8" style="padding: 0">
+                            <div class="well well-sm well-table-header clearfix">
+                                <div class="img-container">
+                                    <img src="#" class="rounded-circle">
+                                    <span id="ImageSpan" style="font-size: 12pt; font-weight: bold; ">Choose photo...</span>
+                                </div>
+                            </div>
+                            <div class="well well-sm well-table-header clearfix">
+                                <div class="col-md-12 col-sm-12" style="padding: 0">
+                                    <div class="btn btn-sm btn-primary" for="inputImage" title="Upload image file">
+                                        <input id="inputImage" class="" name="file" type="file" accept="image/*" data-toggle="tooltip" title="Upload image" onchange="ShowFileMsg()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="padding-right: 0">
+                            <div class="well well-sm well-table-header" style="text-align:center; height:185px; width:161px;">
+                                <span style="font-size: 13pt; font-weight: bold;">Preview</span>
+                                <div id="dataURLView" style="margin-left: auto; margin-right: auto; width: 126px;">
+                                    <img src="~/Content/Image/no-thumb.png" class="rounded-circle" style="width: 126px; height: 126px;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="well well-sm clearfix">
+                        <div class="col-md-12 col-sm-12 text-right" style="padding-right: 0">
+                            <button class="btn btn-danger" id="getDataURL" data-toggle="tooltip" type="button" title="Crop Image" style="pointer-events: none; opacity: .3">Crop Image</button>
+                            <button class="btn btn-primary" data-dismiss="modal" type="button" id="DoneBtn">Done</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/datetimepicker/Gijgo.Timepicker.js"></script>
+    @*<script src="~/Content/datetimepicker/jquery.datetimepicker.full.min.js"></script>*@
+    <script src="~/Content/cropper/cropper.min.js"></script>
+    <script src="~/Content/cropper/cropper-setimage.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ClosedTime').timepicker({
+                uiLibrary: 'bootstrap4'
+            });
+            $('#OpenTime').timepicker({
+                uiLibrary: 'bootstrap4'
+            });
+            document.getElementById("OpenTime").readOnly = true;
+            document.getElementById("ClosedTime").readOnly = true;
+            //var hideshowTiming = function () {
+            //    if ($('#chkTiming').is(":checked")) {
+            //        $("#divclosed").removeClass("d-none");
+            //        $("#divopen").removeClass("d-none");
+            //    } else {
+            //        $("#divclosed").addClass("d-none");
+            //        $("#divopen").addClass("d-none");
+            //    }
+            //}
+            //$(document).on('click', '#chkTiming', hideshowTiming);
+            //hideshowTiming();
+        });
+    </script>
+}
+

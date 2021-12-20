@@ -1,0 +1,528 @@
+﻿
+.tracking-detail {
+    padding: 3rem 0;
+}
+
+#tracking {
+    margin-bottom: 1rem;
+}
+
+[class*=tracking-status-] p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+[class*=tracking-status-] {
+    padding: 0.6rem 0;
+}
+
+.tracking-status-intransit {
+    background-color: #ff6d34;
+}
+
+.tracking-status-outfordelivery {
+    background-color: #f5a551;
+}
+
+.tracking-status-deliveryoffice {
+    background-color: #f7dc6f;
+}
+
+.tracking-status-delivered {
+    background-color: #4cbb87;
+}
+
+.tracking-status-attemptfail {
+    background-color: #b789c7;
+}
+
+.tracking-status-error, .tracking-status-exception {
+    background-color: #d26759;
+}
+
+.tracking-status-expired {
+    background-color: #616e7d;
+}
+
+.tracking-status-pending {
+    background-color: #ccc;
+}
+
+.tracking-status-inforeceived {
+    background-color: #214977;
+}
+
+.tracking-list {
+    border: 1px solid #e5e5e5;
+    background-color: #fff;
+}
+
+.tracking-item {
+    border-left: 1px solid #e5e5e5;
+    position: relative;
+    padding: 2rem 1.5rem .5rem 2.5rem;
+    font-size: .9rem;
+    margin-left: 3rem;
+    min-height: 5rem;
+}
+
+    .tracking-item:last-child {
+        padding-bottom: 4rem;
+    }
+
+    .tracking-item .tracking-date {
+        margin-bottom: .5rem;
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+    }
+
+        .tracking-item .tracking-date span {
+            color: #888;
+            font-size: 85%;
+            padding-left: .4rem;
+        }
+
+    .tracking-item .tracking-content {
+        padding: .5rem .8rem;
+        background-color: #f4f4f4;
+        border-radius: .5rem;
+    }
+
+        .tracking-item .tracking-content .tracking-title {
+            padding: .2rem 0.5rem;
+            background-color: #e6e6e6;
+            border-radius: .5rem;
+            margin-top: 0.6rem;
+        }
+
+
+        .tracking-item .tracking-content span {
+            display: block;
+            color: #888;
+            font-size: 85%;
+        }
+
+
+    .tracking-item .tracking-icon {
+        line-height: 2.5rem;
+        position: absolute;
+        left: -1.3rem;
+        width: 2.6rem;
+        height: 2.6rem;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 1.1rem;
+        background-color: #fff;
+        color: #fff;
+    }
+
+        .tracking-item .tracking-icon.status-sponsored {
+            background-color: #f68;
+        }
+
+        .tracking-item .tracking-icon.status-delivered {
+            background-color: #4cbb87;
+        }
+
+        .tracking-item .tracking-icon.status-outfordelivery {
+            background-color: #f5a551;
+        }
+
+        .tracking-item .tracking-icon.status-deliveryoffice {
+            background-color: #f7dc6f;
+        }
+
+        .tracking-item .tracking-icon.status-attemptfail {
+            background-color: #b789c7;
+        }
+
+        .tracking-item .tracking-icon.status-exception {
+            background-color: #d26759;
+        }
+
+        .tracking-item .tracking-icon.status-inforeceived {
+            background-color: #214977;
+        }
+
+        .tracking-item .tracking-icon.status-intransit {
+            color: #1ec8e7;
+            border: 2px solid #e5e5e5;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+.package-tags {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    .package-tags li {
+        display: block;
+        border-radius: 20px;
+        border: 1px solid #b2b2b2;
+        font-size: 12px;
+        color: #b2b2b2;
+        padding: 1px 10px;
+        list-style: none;
+        margin: 4px;
+        line-height: 19px;
+        text-align: center;
+        height: 26px;
+        width: auto;
+    }
+
+.css-1hrscrw, [data-css-1hrscrw] {
+    overflow: hidden;
+    display: flex;
+}
+
+.css-g71760, [data-css-g71760] {
+    width: 24px;
+    display: block;
+    margin: 0px auto;
+    height: 24px;
+    position: relative;
+}
+.css-g71761, [data-css-g71760] {
+    width: 35px;
+    display: block;
+    margin: 0px auto;
+    height: 35px;
+    position: relative;
+}
+
+.css-1hrscrw > span {
+    min-width: 50px;
+    margin-right: 15px;
+}
+
+.css-1hrscrw .inclusionName, [data-css-1hrscrw] .inclusionName {
+    line-height: 12px;
+    font-size: 10px;
+    padding-top: 5px;
+    overflow-wrap: break-word;
+    color: rgb(62, 62, 62);
+    display: block;
+    text-align: center;
+}
+.css-1hrscrw .inclusionName_adv, [data-css-1hrscrw] .inclusionName_adv {
+    line-height: 12px;
+    font-size: 10px;
+    padding-top: 5px;
+    overflow-wrap: break-word;
+    color: rgb(62, 62, 62);
+    display: block;
+    text-align: center;
+    margin-bottom:13px;
+}
+
+@media(min-width:992px) {
+    .tracking-item {
+        margin-left: 8rem;
+    }
+
+        .tracking-item .tracking-date {
+            position: absolute;
+            left: -10.5rem;
+            width: 7.5rem;
+            text-align: right;
+        }
+
+            .tracking-item .tracking-date span {
+                display: block;
+            }
+
+        .tracking-item .tracking-content {
+            padding: 0;
+            background-color: transparent;
+        }
+}
+
+
+
+
+@import "https://fonts.googleapis.com/css?family=Montserrat:400,700|Raleway:300,400";
+/* colors */
+/* tab setting */
+/* breakpoints */
+/* selectors relative to radio inputs */
+/*html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #efefef;
+  color: #333;
+  font-family: "Raleway";
+  height: 100%;
+}
+body h1 {
+  text-align: center;
+  color: #428BFF;
+  font-weight: 300;
+  padding: 40px 0 20px 0;
+  margin: 0;
+}*/
+
+.tabs {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  position: relative;
+  background: white;
+  padding: 50px;
+  padding-bottom: 80px;
+  /*height: 250px;*/
+  border-radius: 5px;
+  min-width: 240px;
+}
+.tabs input[name="tab-control"] {
+  display: none;
+}
+.tabs .content section h2,
+.tabs ul li label {
+  font-family: "Montserrat";
+  font-weight: bold;
+  font-size: 18px;
+  color: #428BFF;
+}
+.tabs ul {
+  list-style-type: none;
+  padding-left: 0;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  margin-bottom: 10px;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: end;
+          align-items: flex-end;
+  flex-wrap: wrap;
+}
+.tabs ul li {
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+          flex: 1;
+  width: 25%;
+  padding: 0 10px;
+  text-align: center;
+}
+.tabs ul li label {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  color: #929daf;
+  padding: 5px auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.tabs ul li label br {
+  display: none;
+}
+.tabs ul li label svg {
+  fill: #929daf;
+  height: 1.2em;
+  vertical-align: bottom;
+  margin-right: 0.2em;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.tabs ul li label:hover, .tabs ul li label:focus, .tabs ul li label:active {
+  outline: 0;
+  color: #bec5cf;
+}
+.tabs ul li label:hover svg, .tabs ul li label:focus svg, .tabs ul li label:active svg {
+  fill: #bec5cf;
+}
+.tabs .slider {
+  position: relative;
+  width: 25%;
+  -webkit-transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
+  transition: all 0.33s cubic-bezier(0.38, 0.8, 0.32, 1.07);
+}
+.tabs .slider .indicator {
+  position: relative;
+  width: 50px;
+  max-width: 100%;
+  margin: 0 auto;
+  height: 4px;
+  background: #428BFF;
+  border-radius: 1px;
+}
+.tabs .content {
+  margin-top: 30px;
+}
+.tabs .content section {
+  display: none;
+  -webkit-animation-name: content;
+          animation-name: content;
+  -webkit-animation-direction: normal;
+          animation-direction: normal;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: 1;
+          animation-iteration-count: 1;
+  line-height: 1.4;
+}
+.tabs .content section h2 {
+  color: #428BFF;
+  display: none;
+}
+.tabs .content section h2::after {
+  content: "";
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 3px;
+  background: #428BFF;
+  margin-top: 5px;
+  left: 1px;
+}
+.tabs input[name="tab-control"]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
+  cursor: default;
+  color: #428BFF;
+}
+.tabs input[name="tab-control"]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label svg {
+  fill: #428BFF;
+}
+@media (max-width: 600px) {
+  .tabs input[name="tab-control"]:nth-of-type(1):checked ~ ul > li:nth-child(1) > label {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+.tabs input[name="tab-control"]:nth-of-type(1):checked ~ .slider {
+  -webkit-transform: translateX(0%);
+          transform: translateX(0%);
+}
+.tabs input[name="tab-control"]:nth-of-type(1):checked ~ .content > section:nth-child(1) {
+  display: block;
+}
+.tabs input[name="tab-control"]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
+  cursor: default;
+  color: #428BFF;
+}
+.tabs input[name="tab-control"]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label svg {
+  fill: #428BFF;
+}
+@media (max-width: 600px) {
+  .tabs input[name="tab-control"]:nth-of-type(2):checked ~ ul > li:nth-child(2) > label {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+.tabs input[name="tab-control"]:nth-of-type(2):checked ~ .slider {
+  -webkit-transform: translateX(100%);
+          transform: translateX(100%);
+}
+.tabs input[name="tab-control"]:nth-of-type(2):checked ~ .content > section:nth-child(2) {
+  display: block;
+}
+.tabs input[name="tab-control"]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
+  cursor: default;
+  color: #428BFF;
+}
+.tabs input[name="tab-control"]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label svg {
+  fill: #428BFF;
+}
+@media (max-width: 600px) {
+  .tabs input[name="tab-control"]:nth-of-type(3):checked ~ ul > li:nth-child(3) > label {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+.tabs input[name="tab-control"]:nth-of-type(3):checked ~ .slider {
+  -webkit-transform: translateX(200%);
+          transform: translateX(200%);
+}
+.tabs input[name="tab-control"]:nth-of-type(3):checked ~ .content > section:nth-child(3) {
+  display: block;
+}
+.tabs input[name="tab-control"]:nth-of-type(4):checked ~ ul > li:nth-child(4) > label {
+  cursor: default;
+  color: #428BFF;
+}
+.tabs input[name="tab-control"]:nth-of-type(4):checked ~ ul > li:nth-child(4) > label svg {
+  fill: #428BFF;
+}
+@media (max-width: 600px) {
+  .tabs input[name="tab-control"]:nth-of-type(4):checked ~ ul > li:nth-child(4) > label {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+.tabs input[name="tab-control"]:nth-of-type(4):checked ~ .slider {
+  -webkit-transform: translateX(300%);
+          transform: translateX(300%);
+}
+.tabs input[name="tab-control"]:nth-of-type(4):checked ~ .content > section:nth-child(4) {
+  display: block;
+}
+@-webkit-keyframes content {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(5%);
+            transform: translateY(5%);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+  }
+}
+@keyframes content {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(5%);
+            transform: translateY(5%);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+  }
+}
+@media (max-width: 1000px) {
+  .tabs ul li label {
+    white-space: initial;
+  }
+  .tabs ul li label br {
+    display: initial;
+  }
+  .tabs ul li label svg {
+    height: 1.5em;
+  }
+}
+@media (max-width: 600px) {
+  .tabs ul li label {
+    padding: 5px;
+    border-radius: 5px;
+  }
+  .tabs ul li label span {
+    display: none;
+  }
+  .tabs .slider {
+    display: none;
+  }
+  .tabs .content {
+    margin-top: 20px;
+  }
+  .tabs .content section h2 {
+    display: block;
+  }
+}

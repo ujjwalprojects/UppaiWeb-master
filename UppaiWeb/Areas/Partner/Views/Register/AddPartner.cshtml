@@ -1,0 +1,76 @@
+﻿@model UppaiWeb.Areas.Partner.Models.PartnerAdd
+@{
+    ViewBag.Title = "Partner Register";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Partner Management
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/partner/register/partnerlist" class="btn btn-danger"> <i class="fa fa-th-list"></i> Partner List</a></div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-handshake"></i> Partner Management <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>Partner Register</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        @using (Html.BeginForm("AddPartner", "Register", new { @area = "Partner" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="col-md-12 mb-3">
+                <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Partner Name</label>
+                        @Html.TextBoxFor(m => m.PartnerDetails.Name, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Partner Name" })
+                        @Html.ValidationMessageFor(m => m.PartnerDetails.Name)
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Partner Email</label>
+                        @Html.TextBoxFor(m => m.PartnerDetails.EmailID, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Partner Email ID" })
+                        @Html.ValidationMessageFor(m => m.PartnerDetails.EmailID)
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Business Category Name</label>
+                        @Html.DropDownListFor(m => m.PartnerDetails.BusinessCategoryID, new SelectList(Model.BCategoryDDList, "BusinessCategoryID", "BusinessCategoryName"), "----Select Business Category----", new { @class = "form-control", @placeholder = "Select Business Category" })
+                        @Html.ValidationMessageFor(m => m.PartnerDetails.BusinessCategoryID)
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label required">Contact Number</label>
+                        @Html.TextBoxFor(m => m.PartnerDetails.MobileNo, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Contact Number" })
+                        @Html.ValidationMessageFor(m => m.PartnerDetails.MobileNo)
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label required">Partner Address</label>
+                        @Html.TextAreaFor(m => m.PartnerDetails.Address, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Address" })
+                        @Html.ValidationMessageFor(m => m.PartnerDetails.Address)
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="action-div action-style">
+                <a href="/partner/register/partnerlist" class="btn btn-secondary btn-user">Back To List</a>
+                <button type="submit" class="btn btn-success btn-user float-right"><i class="fa fa-save"></i> Save</button>
+                <div class="clearfix"></div>
+            </div>
+        }
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

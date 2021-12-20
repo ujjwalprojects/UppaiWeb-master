@@ -1,0 +1,137 @@
+﻿@model UppaiWeb.Areas.Partner.Models.PartnerEdit
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    //int i = 0;
+}
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Profile Manage
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/partner/register/editpartner/@Model.PartnerDetails.Id" class="btn btn-danger"> <i class="fa fa-edit"></i>  Edit Profile</a></div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-user"></i> Profile Manage <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>My Profile </small></h6>
+    </div>
+    <div class="card-body pb-4">
+        <div class="alert alert-secondary">
+            <h2 class="text-center">PARTNER INFORMATION</h2>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-10 p-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label">Email/User Name: <strong>@Model.PartnerDetails.EmailID</strong> </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label">Name: <strong>@Model.PartnerDetails.Name</strong> </label>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <label class="control-label">Role Name: <strong>@Model.RoleName</strong> </label>
+                            </div>
+                            <div class="col-md-6 ">
+                                <label class="control-label">Contact No.: <strong>@Model.PartnerDetails.MobileNo</strong></label>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <label class="control-label">Alternate Contact No.: <strong>@Model.PartnerDetails.AlternateMobileNo</strong></label>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.PartnerDetails.OpeningTime))
+                            {
+                                <div class="col-md-6">
+                                    <label class="control-label">Opening Time: <strong>@Model.PartnerDetails.OpeningTime</strong> </label>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <label class="control-label">Closed Time: <strong>@Model.PartnerDetails.ClosedTime</strong> </label>
+                                </div>
+                            }
+                            <div class="col-md-12">
+                                @if (Model.OpenRangeDays.Count() > 0)
+                                {
+                                    <label class="control-label">
+                                        Operational Days:
+                                        @for (int i = 0; i < Model.OpenRangeDays.Count(); i++)
+                                        {
+                                            if (i == Model.OpenRangeDays.Count() - 1)
+                                            {
+                                                <strong>@Model.OpenRangeDays[i]</strong>
+                                            }
+                                            else if (i == Model.OpenRangeDays.Count() - 2)
+                                            {
+                                                <strong>@Model.OpenRangeDays[i]</strong> <span class="text-danger"> &amp; </span>
+                                            }
+                                            else
+                                            {
+                                                <strong>@Model.OpenRangeDays[i]</strong> <span class="text-danger"> &cedil; </span>
+                                            }
+                                        }
+                                    </label>
+                                }
+                                else
+                                {
+                                    <label class="control-label">Operational Days: <span class="text-danger">Not Operational Till Now</span></label>
+                                }
+                            </div>
+                            <div class="col-md-12">
+                                <label class="control-label">Address: <strong>@Model.PartnerDetails.Address</strong></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-2 text-center p-0">
+                        <div id="imgPhotoThumb" style="margin-left: auto; margin-right: auto;">
+                            @if (Model.PartnerDetails.ImagesUpload == null || Model.PartnerDetails.ImagesUpload == "")
+                            {
+                                <img src="~/Content/Image/no-thumb.png" alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 140px; height: 140px; vertical-align: middle" />
+                            }
+                            else
+                            {
+                                <img src="@Model.PartnerDetails.ImagesUpload " alt="Change Photo" class="rounded-circle img-thumbnail" style="width: 140px; height: 140px; vertical-align: middle" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="alert alert-secondary">
+            <h2 class="text-center">PARTNER BANK DETAILS</h2>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="control-label">A/C Holder Name: <strong>@Model.PartnerDetails.ACHolderName</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Bank Name: <strong>@Model.PartnerDetails.BankName</strong></label>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label ">IFSC Code: <strong>@Model.PartnerDetails.IFSCCode</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Account No.: <strong>@Model.PartnerDetails.AccountNo</strong></label>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label">Branch Name: <strong>@Model.PartnerDetails.BankBranch</strong></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+
+

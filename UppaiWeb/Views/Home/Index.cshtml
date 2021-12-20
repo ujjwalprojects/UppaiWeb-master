@@ -1,0 +1,298 @@
+﻿@model UppaiWeb.ViewModels.HomeVM
+@{
+    Layout = "~/Views/Shared/_LayoutGeneral.cshtml";
+
+}
+<link href="~/Content/text-flip.css" rel="stylesheet" />
+<style>
+
+    .solution_card {
+        flex: 0 100%;
+        background: #fff;
+        /*box-shadow: 0 2px 4px 0 rgba(136, 144, 195, 0.2), 0 5px 15px 0 rgba(37, 44, 97, 0.15);*/
+        border-radius: 15px;
+        margin: 8px;
+        padding: 5px;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        /*min-height: 265px;*/
+        transition: 0.7s;
+    }
+
+        .solution_card:hover {
+            /*background: #309df0;*/
+            color: #fff;
+            transform: scale(1.1);
+            z-index: 9;
+        }
+
+            .solution_card:hover .solu_title h3,
+            .solution_card:hover .solu_description p {
+                color: #fff;
+            }
+</style>
+<!-- Start Slider -->
+<div id="slides-shop" class="cover-slides">
+    <ul class="slides-container">
+        @if (@Model.BannerList.Count() > 0)
+        {
+            foreach (var item in Model.BannerList)
+            {
+                <li class="text-center">
+                    <img src="~/Uploads/Banner/@item.BannerFilePath" alt="">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-lg-6 class">
+                                <h1 class="m-b-20"><strong>@item.BannerTitle</strong></h1>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-lg-6 class">
+                                <h3 id="resizing-h3" class="pt-5">
+                                    <span>
+                                        <div class="stage">
+                                            <div class="cubespinner">
+                                                <div class="face1">Food</div>
+                                                <div class="face2">PickUp</div>
+                                                <div class="face3">Lorem</div>
+                                                <div class="face4">Lorem2</div>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+            //foreach (var img in Model.BannerList)
+            //{
+
+
+            //}
+        }
+        else
+        {
+            <li class="text-center">
+                <img src="https://lh5.googleusercontent.com/p/AF1QipMKiXt95VCrywwrFyIbeheZy5Na9DvT6Xk-fuzi=w203-h114-k-no" alt="">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="m-b-20"><strong>Welcome To Uppai Delivery</strong></h1>
+                            <p class="m-b-40">Food Delivery Service at Gangtok</p>
+                            @*<p><a class="btn hvr-hover" href="#">Shop New</a></p>*@
+                        </div>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+    <div class="slides-navigation">
+        <a href="#" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+        <a href="#" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+    </div>
+</div>
+<div class="partner-section pt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="title-all text-center">
+                    <h1>Our Services</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="solution_card">
+                    <div class="so_top_icon">
+                        <a href="/home/partnerlist">
+                            <img src="~/Content/Image/2.png" class="img-thumbnail border-0" style="border-radius:15px;" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="solution_card">
+                    <div class="so_top_icon">
+                        <img src="~/Content/Image/1.png" class="img-thumbnail border-0" style="border-radius:15px;" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="solution_card">
+                    <div class="so_top_icon">
+                        <img src="~/Content/Image/3.png" class="img-thumbnail border-0" style="border-radius:15px;" />
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-md-4">
+                    <div class="card bg-light">
+                        <a href="/home/partnerlist">
+                            <img src="~/Content/Image/2.png" class="img-thumbnail border-0" />
+                        </a>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+    <div class="shop-detail-box-main">
+        <div class="container">
+            <div class="row my-5">
+                <div class="col-lg-12">
+                    <div class="title-all text-center">
+                        <h1>Top Picks For You</h1>
+                    </div>
+                    <div class="featured-products-box owl-carousel owl-theme">
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="~/Content/Image/img-pro-01.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <a class="cart" href="#">View Menu</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>Lorem ipsum dolor sit amet</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="~/Content/Image/img-pro-02.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <a class="cart" href="#">View Menu</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>Lorem ipsum dolor sit amet</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="~/Content/Image/img-pro-03.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <a class="cart" href="#">View Menu</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>Lorem ipsum dolor sit amet</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="~/Content/Image/img-pro-04.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <a class="cart" href="#">View Menu</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>Lorem ipsum dolor sit amet</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="~/Content/Image/img-pro-01.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <a class="cart" href="#">View Menu</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>Lorem ipsum dolor sit amet</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="~/Content/Image/img-pro-02.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <a class="cart" href="#">View Menu</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>Lorem ipsum dolor sit amet</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="~/Content/Image/img-pro-03.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <a class="cart" href="#">View Menu</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>Lorem ipsum dolor sit amet</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="~/Content/Image/img-pro-04.jpg" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <a class="cart" href="#">View Menu</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>Lorem ipsum dolor sit amet</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="key-point pt-5 pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="list-box text-center d-flex">
+                        <div class="list-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="content">
+                            <h3 class="text-left"><b>Free Delivery</b></h3>
+                            <p>When Order Over <i class="fas fa-rupee"></i> 300</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="list-box text-center d-flex">
+                        <div class="list-icon">
+                            <i class="fas fa-phone-volume"></i>
+                        </div>
+                        <div class="content">
+                            <h3 class="text-left"><b>Support</b></h3>
+                            <p>Get support all day</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="list-box text-center d-flex">
+                        <div class="list-icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <div class="content">
+                            <h3 class="text-left"><b>Refund</b></h3>
+                            <p>Get refund within 3 business days</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>

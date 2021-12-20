@@ -1,0 +1,36 @@
+﻿.field-validation-error {
+    color: #ff726f;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #D1413E;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #ff726f;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.form-group label.required:after {
+    content: "*";
+    color: #D1413E;
+    font-weight: 400;
+    font-size: 15px;
+    position: absolute;
+    margin-left: 3px;
+}

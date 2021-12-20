@@ -1,0 +1,86 @@
+﻿@model UppaiWeb.Areas.MasterConfig.Models.CMSContentVM
+@{
+    ViewBag.Title = "CMS Content";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/cropper/cropper.min.css" rel="stylesheet" />
+
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Web Content Management
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/masterconfig/webcontent/CMSContentList" class="btn btn-danger"> <i class="fa fa-th-list"></i> CMS Content List</a></div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-globe"></i> Web Content <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>CMS Content</small><small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>Edit Content</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        <form method="post" action="/masterconfig/webcontent/CMSContentDetails" id="cmsForm">
+            @Html.HiddenFor(m => m.CMSContent.CMSContentID)
+            @Html.HiddenFor(m => m.CMSContent.CMSContentTitle)
+            @Html.AntiForgeryToken()
+            <div class="col-md-12 mb-3">
+                <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="control-label required">Title</label>
+                        @Html.TextBoxFor(m => m.CMSContent.CMSContentTitle, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Banner Title", @Disabled = "Disabled" })
+                        @Html.ValidationMessageFor(m => m.CMSContent.CMSContentTitle)
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">@Model.CMSContent.CMSContentTitle Content</label>
+                        @Html.TextAreaFor(m => m.CMSContent.CMSContent, new { @class = "form-control input-sm", @id = "cmscontent", @name = "cmscontent" })
+                        @Html.ValidationMessageFor(m => m.CMSContent.CMSContent)
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="action-div action-style">
+                <a href="/masterconfig/webcontent/CMSContentList" class="btn btn-secondary btn-user">Back To List</a>
+                <button type="submit" class="btn btn-success btn-user float-right"><i class="fa fa-save"></i> Save</button>
+                <div class="clearfix"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CKEDITOR.replace('cmscontent');
+            CKEDITOR.disableAutoInline = true;
+            $('#cmsForm').on('submit', function (e) {
+                if (!check_form())
+                    e.preventDefault();
+            });
+        });
+        function check_form() {
+            var editor_val = CKEDITOR.instances.cmscontent.document.getBody().getText()
+            var new_val = editor_val.replace(/(\r\n\t|\n|\r\t)/gm, "");
+            if (new_val == '') {
+                $('span[data-valmsg-for="CMSContent.CMSContent"]').removeClass('field-validation-valid').addClass('field-validation-error').text('Content value cannot be empty');
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+}
+

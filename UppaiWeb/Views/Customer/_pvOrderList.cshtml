@@ -1,0 +1,155 @@
+﻿@model UppaiWeb.ViewModels.OrderVM
+<div id="DataGrid" class="col-md-12">
+    @if (Model.OrderList.Count() > 0)
+    {
+        <div class="row">
+            @foreach (var item in Model.OrderList)
+            {
+                <div class="col-md-6 mt-2">
+                    <div class="col-md-12 customcard">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span>Order #:</span><strong> @item.OrderID</strong>
+                            </div>
+                            <div class="col-md-6">
+                                <span>Date:</span><strong> @item.OrderDate.ToString("dd MMM yyyy")</strong>
+                            </div>
+                            <div class="col-md-6">
+                                <span>Total:</span><strong> <i class="fas fa-rupee"></i>@item.TotalAmt.ToString("0.00")</strong>
+                            </div>
+                            <div class="col-md-6">
+                                @if (item.IsPrePaid)
+                                {
+                                    <span>Payment Mode:</span><strong> Prepaid</strong>
+                                }
+                                else
+                                {
+                                    <span>Payment Mode:</span><strong> COD</strong>
+                                }
+                            </div>
+                            <div class="col-md-12">
+                                <span>Order From:</span><strong> @item.PartnerName</strong>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <a href="javascript:void(0);" class="viewOrderDtls text-info pull-right ml-2" id="@item.OrderID"><i class="fas fa-eye"></i> View Order</a>
+                                @*<a href="/customer/vieworderdtls/@item.OrderID" class="text-info pull-right ml-2"><i class="fas fa-eye"></i> View Order </a>*@
+                                <form action="/customer/RepeatOrder" method="post">
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("id", item.OrderID)
+                                    @Html.Hidden("addID", item.AddressID)
+                                    <a href="@Url.Action("RepeatOrder","customer", new { id = item.OrderID,addID=item.AddressID})" class="reorder text-info pull-right ml-2" data-toggle="tooltip" data-placement="bottom" title="Repeat Order" data-record="@item.PartnerName">
+                                        <i class="fas fa-recycle"></i><span> Re-Order</span>
+                                    </a>
+                                </form>
+                                @*<a href="@Url.Action("checkout","customer",new {AddrID=item.OrderID,Area="" })" class="text-info pull-right ml-2"><i class="fas fa-recycle"></i> Re-Order </a>*@
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <img src="~/Content/Image/no_record.png" /><br />
+            <span class="text-muted">You dont have any active orders. Place your first order now!..</span>
+        </div>
+    }
+    <div class="pagination">
+        <ul class="pagination-3">
+            @{
+                var nextpage = (Model.PagingInfo.CurrentPage + 1);
+                var previouspage = (Model.PagingInfo.CurrentPage - 1);
+            }
+            @if (Model.PagingInfo.TotalPages > 9)
+            {
+                if (Model.PagingInfo.CurrentPage > 9)
+                {
+                    <li class="page-number"><a href="javascript:void(0);" id="@previouspage" class="previousPage">&laquo;</a></li>
+                    for (int pg = ((@Model.PagingInfo.CurrentPage - 9) + 1); pg <= @Model.PagingInfo.CurrentPage; pg++)
+                    {
+                        if (pg == Model.PagingInfo.CurrentPage)
+                        {
+                            <li class="page-number active"><a href="javascript:void(0);" id="@pg" class="pageChange">@pg</a></li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="javascript:void(0);" id="@pg" class="pageChange" data-dist="@ViewBag.District" data-type="FPSDtls">@pg</a>
+                            </li>
+                        }
+                    }
+                    <li class="page-number"><a href="javascript:void(0);" id="@nextpage" class="nextPage">&raquo;</a></li>
+                }
+                else
+                {
+                    <li class="page-number"><a href="javascript:void(0);" id="@previouspage" class="previousPage">&laquo;</a></li>
+                    for (int pg = 1; pg <= 9; pg++)
+                    {
+                        if (pg == Model.PagingInfo.CurrentPage)
+                        {
+                            <li class="page-number active"><a href="javascript:void(0);" id="@pg" class="pageChange">@pg</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-number"><a href="javascript:void(0);" id="@pg" class="pageChange">@pg</a></li>
+                        }
+                    }
+                    <li class="page-number"><a href="javascript:void(0);" id="@nextpage" class="nextPage">&raquo;</a></li>
+                }
+            }
+
+            else
+            {
+                if (Model.PagingInfo.TotalPages < 9)
+                {
+                    for (int pg = 1; pg <= Model.PagingInfo.TotalPages; pg++)
+                    {
+                        if (pg == Model.PagingInfo.CurrentPage)
+                        {
+                            <li class="page-number active"><a href="javascript:void(0);" id="@pg" class="pageChange">@pg</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-number"><a href="javascript:void(0);" id="@pg" class="pageChange">@pg</a></li>
+                        }
+                    }
+                }
+                else
+                {
+                    for (int pg = 1; pg <= 9; pg++)
+                    {
+                        if (pg == Model.PagingInfo.CurrentPage)
+                        {
+                            <li class="page-number active"><a href="javascript:void(0);" id="@pg" class="pageChange">@pg</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-number"><a href="javascript:void(0);" id="@pg" class="pageChange">@pg</a></li>
+                        }
+                    }
+                }
+            }
+            @*<li class="page-number prev"><a href="#">&laquo;</a></li>
+                <li class="page-number"><a href="#">1</a></li>
+                <li class="page-number active"><a href="#">2</a></li>
+                <li class="page-number"><a href="#">3</a></li>
+                <li class="page-number"><a href="#">4</a></li>
+                <li class="page-number"><a href="#">5</a></li>
+                <li class="page-number"><a href="#">6</a></li>
+                <li class="page-number"><a href="#">7</a></li>
+                <li class="page-number"><a href="#">8</a></li>
+                <li class="page-number"><a href="#">9</a></li>
+                <li class="page-number"><a href="#">10</a></li>
+                <li class="page-number prev"><a href="#">&raquo;</a></li>*@
+        </ul>
+    </div>
+</div>
+
+
+@*error message*@
+@*<div id="ErrMsg" style="display:none;">
+        <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+    </div>*@

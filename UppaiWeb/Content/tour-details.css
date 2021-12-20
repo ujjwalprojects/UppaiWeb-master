@@ -1,0 +1,110 @@
+﻿/***** Radio button *******/
+
+    /* label */
+    label {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin: 12px 12px;
+        cursor: pointer;
+        position: relative;
+    }
+
+
+    /* input */
+    input {
+        opacity: 0;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+    }
+
+
+    /* .design */
+    .design {
+        width: 16px;
+        height: 16px;
+        border: 1px solid hsl(0, 0%, 14%);
+        border-radius: 100%;
+        margin-right: 16px;
+        position: relative;
+    }
+
+        .design::before,
+        .design::after {
+            content: "";
+            display: block;
+            width: 14px;
+            height: 14px;
+            border-radius: inherit;
+            position: absolute;
+            transform: scale(0);
+            transform-origin: center center;
+        }
+
+        .design:before {
+            background: hsl(0, 0%, 14%);
+            opacity: 0;
+            transition: .3s;
+        }
+
+        .design::after {
+            background: hsl(0, 0%, 14%);
+            opacity: .4;
+            transition: .6s;
+        }
+
+
+    /* .text */
+    .text {
+        color: hsl(0, 0%, 14%);
+        font-weight: 500;
+    }
+
+
+    /* checked state */
+    input:checked + .design::before {
+        opacity: 1;
+        transform: scale(.6);
+    }
+
+
+    /* other states */
+    input:hover + .design,
+    input:focus + .design {
+        border: 1px solid #17a2b8;
+    }
+
+        input:hover + .design:before,
+        input:focus + .design:before {
+            background: #17a2b8;
+        }
+
+    input:hover ~ .text {
+        color: #808080;
+    }
+
+    input:focus + .design::after,
+    input:active + .design::after {
+        opacity: .1;
+        transform: scale(1.6);
+    }
+
+    /**** Others **/
+    .w-0 {
+        width: 0% !important;
+    }
+
+    .display-price {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .display-6 {
+        font-size: 2.5rem;
+        font-weight: 500;
+        line-height: 1.5;
+    }

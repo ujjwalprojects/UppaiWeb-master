@@ -1,0 +1,75 @@
+﻿@model UppaiWeb.ViewModels.MenuDtlsVM
+<div id="DataGrid" class="col-md-12">
+    @if (Model.MenuList.Count() > 0)
+    {
+        <div class="row">
+            @foreach (var item in Model.MenuList)
+            {
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                    <div class="products-single fix">
+                        <div class="box-img-hover">
+                            @if (item.DiscountPercentage != 0)
+                            {
+                                <div class="type-lb">
+                                    <p class="sale">@item.DiscountPercentage% Off</p>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(@item.ImageThumbnail))
+                            {
+                                <img src="~/Uploads/Menu/@item.ImagesFile" class="img-fluid" alt="@item.MenuName">
+                            }
+                            else
+                            {
+                                <img src="~/Content/Image/MenuDefault.png" class="img-fluid" alt="@item.MenuName">
+                            }
+                            @*<div class="mask-icon">
+                                    <a class="cart" href="#">Add to Cart</a>
+                                </div>*@
+                        </div>
+                        <div class="why-text">
+                            <h4 class="p-0">@item.MenuName</h4>
+                            @if (item.DiscountPrice != null)
+                            {
+                                <span><span class="lineovertext"> <i class="fas fa-rupee"></i>  @item.OrginalPrice.ToString("0.00")</span>&nbsp; <i class="fas fa-rupee"></i> @item.DiscountPrice.Value.ToString("0.00")</span><br />
+                            }
+                            else
+                            {
+                                <span><i class="fas fa-rupee"></i> @item.OrginalPrice.ToString("0.00")</span><br />
+                            }
+                            <img src="~/Content/Image/VegIcon.png" class="pb-1" style="width:18px;height:auto;" />
+                            @if (item.IsAvailable)
+                            {
+                                <a href="javascript:void(0)" class="pull-right btn btn-sm add-cart-btn add-to-cart" id="one_@item.MenuID"><i class="fa fa-shopping-cart"></i> Add To cart</a>
+                                <span class="pull-right d-none" id="combo_@item.MenuID">
+                                        <a href="javascript:void(0)" class="memuminus" id="memuminus_@item.MenuID"><i class="fa fa-minus-circle"></i></a>&nbsp;&nbsp; <span id="menuqty_@item.MenuID">   </span> &nbsp;&nbsp;<a href="javascript:void(0)" class="cartplus" id="memuplus_@item.MenuID"><i class="fa fa-plus-circle"></i></a>
+                                    </span>
+                                @*<span class="btn btn-sm add-cart-btn pull-right d-none" id="combobtn_@item.MenuID">
+                                    <a href="javascript:void(0)" class="memuminus"><i class="fa fa-minus-circle text-white"></i></a>&nbsp;&nbsp; <span id="qty"> 1 </span> &nbsp;&nbsp;<a href="javascript:void(0)" class="memuplus"><i class="fa fa-plus-circle text-white"></i></a>
+                                </span>*@
+                            }
+                            else
+                            {
+                                <a href="javascript:void(0)" class="pull-right btn btn-sm btn-secondary disabled"> <i class="fa fa-remove"></i> Not Available</a>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <img src="~/Content/Image/no_record.png" /><br />
+            <span class="text-muted">No records available or your Filter record in not available..</span>
+        </div>
+    }
+</div>
+@*error message*@
+@*<div id="ErrMsg" style="display:none;">
+        <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+    </div>*@
+
+
+

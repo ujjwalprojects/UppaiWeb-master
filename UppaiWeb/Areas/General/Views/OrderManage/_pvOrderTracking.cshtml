@@ -1,0 +1,43 @@
+﻿@model UppaiWeb.Areas.General.Models.OrderTrackingVM
+<div id="OrdTrack" class="col-md-12">
+    <div class="row">
+        <div class="col-md-6 text-left">
+            <span>Order #:</span><strong> @Model.OrderManage.OrderID</strong>
+        </div>
+        <div class="col-md-6 text-center">
+            <span>Date:</span><strong> @Model.OrderManage.OrderDate.ToString("dd MMM yyyy")</strong>
+        </div>
+
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @*<strong>From:@Model.OrderManage.PartnerName</strong>*@
+                        @if (Model.OrderTransList.Count() > 0)
+                        {
+                            <div class="timeline p-4 block mb-4">
+                                @foreach (var item in Model.OrderTransList)
+                                {
+                                    if (@item.OrderStatus != "Order Added")
+                                    {
+                                        <div class="tl-item active">
+                                            <div class="tl-dot b-warning"></div>
+                                            <div class="tl-content">
+                                                <div class=""><b>@item.OrderStatus (@item.TransDate.ToString("dd MMM yyyy hh:mm"))</b></div>
+                                                <div class="">@item.TransDescription</div>
+                                                @*<div class="tl-date">@item.TransDate.ToString("dd MMM yyyy hh:mm")</div>*@
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+

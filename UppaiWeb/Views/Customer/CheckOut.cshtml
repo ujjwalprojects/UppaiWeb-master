@@ -1,0 +1,390 @@
+﻿@model UppaiWeb.ViewModels.CheckOutVM
+@{
+    Layout = "~/Views/Shared/_LayoutGeneral.cshtml";
+    List<string> DeliveryType = new List<string> { "Delivery Now", "Delivery Schedule" };
+    int i = 0;
+}
+
+<link href="~/Content/AdminStyle/Site.css" rel="stylesheet" />
+<link href="~/Content/datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" />
+<div class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="menu-title">
+                    <h2>Check Out Details</h2>
+                    <ul class="custom_breadcrumb">
+                        <li><a href="/home/index"><i class="fa fa-home"></i> Home</a></li>
+                        <li><a href="/home/partnerlist"><i class="fa fa-cutlery"></i> Restaurants</a></li>
+                        <li><a href="/home/menudetails/@Model.PartnerLocation.PartnerID"><i class="fas fa-hamburger"></i> Menu Details</a></li>
+                        <li><i class="fas fa-shopping-basket"></i> Check Out</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="customcard pb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="mt-2 pb-0">Check Out Details</h2>
+                        </div>
+                    </div>
+                    <hr class="mb-2" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong class="pull-left">Deliver To <i class="fas fa-map-marker-alt"></i></strong>
+                            <a href="/customer/addaddress" class="pull-right"><i class="fas fa-edit"></i> Change Address</a>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-borderless">
+                                @if (@Model.DeliverTo.AddressType == "Home")
+                                {
+                                    <strong><i class="fas fa-home text-info"></i> @Model.DeliverTo.AddressType</strong><br />
+                                }
+                                else
+                                {
+                                    <strong><i class="fas fa-briefcase text-info"></i> @Model.DeliverTo.AddressType</strong><br />
+                                }
+                                <strong class="pb-1"><i class="fas fa-user text-info"></i> @Model.DeliverTo.ContactPersonName &nbsp;&nbsp; <i class="fas fa-mobile-phone text-info"></i>&nbsp;&nbsp; @Model.DeliverTo.ContactNumber)</strong><br />
+                                <span><i class="fas fa-map-marker-alt text-info"></i> @Model.DeliverTo.FlatFloorBuilding, @(Model.DeliverTo.Landmark != null ? Model.DeliverTo.Landmark : ""),@Model.DeliverTo.FullAddress - @Model.DeliverTo.PinNo</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-borderless">
+                                <form action="/Customer/CheckOut" method="post">
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(m => m.AddEditOrder.OrderID)
+                                    @Html.HiddenFor(m => m.AddEditOrder.AddressID)
+                                    @Html.HiddenFor(m => m.AddEditOrder.PartnerID)
+                                    @Html.HiddenFor(m => m.AddEditOrder.OrderBy)
+                                    @Html.HiddenFor(m => m.AddEditOrder.NetAmt, new { id = "netamtval" })
+                                    @Html.HiddenFor(m => m.AddEditOrder.TaxAmt, new { id = "taxamtval" })
+                                    @Html.HiddenFor(m => m.AddEditOrder.DeliveryFee, new { id = "deliveryfeeval" })
+                                    @Html.HiddenFor(m => m.AddEditOrder.TotalAmt, new { id = "totalamtval" })
+                                    <div class="col-md-12 mt-2">
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label required">Delivery Type</label>
+                                                @Html.DropDownListFor(m => m.AddEditOrder.OrderType, new SelectList(DeliveryType), "----Select Delivery Type----", new { @class = "form-control", @id = "delivertype" })
+                                                @Html.ValidationMessageFor(m => m.AddEditOrder.OrderType)
+                                            </div>
+                                            <div class="form-group col-md-12" id="SheduleDiv">
+                                                <label class="control-label required">Shedule Date &amp; Time</label>
+                                                @Html.TextBoxFor(m => m.AddEditOrder.OrderSchedule, new { @class = "form-control", @autocomplete = "off", @placeholder = "Select Schedule Time*", @id = "dtpShedule" })
+                                                @Html.ValidationMessageFor(m => m.AddEditOrder.OrderSchedule)
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Delivery Instruction <span class="text-muted">(If Any)</span></label>
+                                                @Html.TextBoxFor(m => m.AddEditOrder.DeliveryInstruction, new { @class = "form-control", @autocomplete = "off", @placeholder = "Add Delivery Instruction", @id = "inst" })
+                                                @Html.ValidationMessageFor(m => m.AddEditOrder.DeliveryInstruction)
+                                            </div>
+                                            <hr />
+                                            <div class="col-md-12 mb-2">
+                                                <button type="submit" class="btn btn-warning btn-sm float-right"><i class="fa fa-save"></i> Process To Order</button>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="customcard">
+                    @if (@Model.CheckOutItems != null)
+                    {
+                        <strong>Your Shopping Cart</strong> <span class="pull-right">(<span id="mycart"> @Model.CheckOutItems.Sum(x => x.Qty) </span> Items)</span><br />
+                    }
+                    else
+                    {
+                        <strong>Your Shopping Cart</strong> <span class="pull-right">(<span id="mycart"> 0 </span> Items)</span><br />
+                    }
+                    <span class="pull-left">From: <span class="text-success">@Model.OrderFrom</span></span>
+                    @*<div class="clearfix"></div>
+                        <hr />*@
+                    <div class="table-responsive mb-2">
+                        <table class="table table-striped" width="100%">
+                            <tbody class="fontsize-13">
+                                @if (@Model.CheckOutItems != null)
+                                {
+                                    foreach (var item in @Model.CheckOutItems)
+                                    {
+                                        <tr class="data-row" id="rowdtls_@item.MenuID">
+                                            <td>
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 font-weight-bold tr_menu_name" id="menuname_@item.MenuID">@item.MenuName</div>
+                                                        <div class="col-md-4 tr_menu_price" id="menuprice_@item.MenuID"><i class="fa fa-rupee"></i> @item.Price.ToString("0.00")</div>
+                                                        <div class="col-md-4 text-center tr_menu_qty">
+                                                            <span class="">
+                                                                <a href="javascript:void(0)" class="cartminus" id="minusone_@item.MenuID"><i class="fa fa-minus-circle"></i></a>&nbsp;&nbsp; <span id="qty_@item.MenuID">  @item.Qty </span> &nbsp;&nbsp;<a href="javascript:void(0)" class="cartplus" id="plusone_@item.MenuID"><i class="fa fa-plus-circle"></i></a>
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-md-4 text-right tr_menu_total index_@i" id="menutotal_@item.MenuID"><i class="fa fa-rupee"></i> @item.TotalAmt.ToString("0.00")</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="tr_menu_id d-none">@item.MenuID</td>
+                                            <td class="tr_menu_partner d-none"> @item.AddedBy</td>
+                                            <td class="tr_menu_type d-none">'@item.MenuType '</td>
+                                            <td class="tr_menu_partnerid d-none">@item.PartnerID </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="clearfix"></div>
+                        <hr class="mt-0 mb-0" />
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-8 ">
+                                    <strong class="pull-right">Sub Total:</strong>
+                                </div>
+                                <div class="col-md-4 pull-right">
+                                    @*<strong class="pull-right"><i class="fa fa-rupee"></i> @Model.CheckOutItems.Sum(x => x.TotalAmt).ToString("0.00")</strong>*@
+                                    <strong class="pull-right"><i class="fa fa-rupee"></i> <span id="subtotal"></span></strong>
+                                </div>
+                                <div class="col-md-8 ">
+                                    <strong class="pull-right">Tax:</strong>
+                                </div>
+                                <div class="col-md-4 pull-right">
+                                    @*<strong class="pull-right"><i class="fa fa-rupee"></i> @Model.CheckOutItems.Sum(x => x.TotalAmt * 5 / 100).ToString("0.00")</strong>*@
+                                    <strong class="pull-right"><i class="fa fa-rupee"></i> <span id="taxamt"></span></strong>
+                                </div>
+                                <div class="col-md-8 ">
+                                    <strong class="pull-right">Delivery Fee:</strong>
+                                </div>
+                                <div class="col-md-4 pull-right">
+                                    <strong class="pull-right"><i class="fa fa-rupee"></i> <span id="deliveryfee"></span></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr class="mt-0 mb-0" />
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-8 ">
+                                    <strong class="pull-right">Grand Total:</strong>
+                                </div>
+                                <div class="col-md-4 pull-right">
+                                    @*<strong class="pull-right"><i class="fa fa-rupee"></i> @Model.CheckOutItems.Sum(x => x.TotalAmt).ToString("0.00")</strong>*@
+                                    <strong class="pull-right"><i class="fa fa-rupee"></i> <span id="gtotal"></span></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 d-none text-center" id="notediv">
+                        <small class=" text-danger">Note: Due to heavy Rainfall Surcharge is added in Delivery Fee.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZbAIlLlcRXFqYg9JxT0VwJxLe_gjFaIE&libraries=places&v=weekly"></script>
+    @*<script src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>*@
+    <script type="text/javascript">
+        var directionsService;
+        $(document).ready(function (e) {
+            directionsService = new google.maps.DirectionsService();
+            $('#dtpShedule').datetimepicker({
+                format: 'd M Y H:i',
+                minDate: 0,
+            })
+            var cartContainer = document.getElementsByTagName('tbody')[0]
+            var mycartcount = function () {
+                var count = $('#mycart').text();
+                $('#cartcount').text(count);
+            }
+            mycartcount();
+
+            //Function For Total Qty In My cart
+            var CartCountfun = function (Opr) {
+                var cartcount = $('#cartcount').text();
+                if (cartcount != "" || cartcount != "0") {
+                    if (Opr == "PlusOne") {
+                        cartcount = parseInt(cartcount) + parseInt(1);
+                    }
+                    else {
+                        cartcount = parseInt(cartcount) - parseInt(1);
+                    }
+                }
+                else {
+                    cartcount = parseInt(0) + parseInt(1)
+                }
+                $('#cartcount').text(cartcount);
+                $('#mycart').text(cartcount);
+                if (cartcount == "" || cartcount == "0") {
+                    ($('#chkoutbtn').addClass('d-none'));
+                    ($('#noitems').removeClass('d-none'));
+                }
+            }
+
+            //Send List of Records to controller
+            function PostCheckoutItems() {
+                //Build List object that has to be sent to controller
+                var MenuList = []; // list object
+                var index = $(".data-row").length;
+                $('.data-row').each(function (index) { //loop in table list
+                    var menu = {}; // create new Items object and set its properties
+                    menu.PartnerID = $(this).find('td.tr_menu_partnerid').text();
+                    menu.AddedBy = $(this).find('td.tr_menu_partner').text();
+                    menu.MenuID = $(this).find('td.tr_menu_id').text();
+                    menu.MenuType = $(this).find('td.tr_menu_type').text();
+                    menu.MenuName = $(this).find('div.tr_menu_name').text();
+                    menu.Price = $(this).find('div.tr_menu_price').text();
+                    menu.Qty = $(this).find('div.tr_menu_qty').text();
+                    menu.TotalAmt = $(this).find('div.tr_menu_total').text();
+                    MenuList.push(menu); // add Items object to list object
+                });
+                //Send list of Items to controller via ajax
+                $.ajax({
+                    url: "/home/PostCheckOutItems",
+                    type: "POST",
+                    data: JSON.stringify(MenuList),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        // Process response from controller
+                        if (data.length > 0) {
+                            //alert("Items have been saved successfully."); // show success notification
+                            ($('#chkoutbtn').removeClass('d-none'));
+                            ($('#noitems').addClass('d-none'));
+                        } else {
+                            alert("Ooops, an error has ocurrer while processing the transaction.");
+                            ($('#chkoutbtn').addClass('d-none'));
+                            ($('noitems').removeClass('d-none'));
+                        }
+                    }
+                });
+            }
+
+            //On click plus icon and Update in cart
+            $(document).on('click', '.cartplus', function () {
+                var IDVal = $(this).attr("id");
+                var MenuID = IDVal.split('_');
+                var chkoutQty = $('#qty_' + MenuID[1]).text();
+                var newchkoutQty = parseInt(chkoutQty) + parseInt(1);
+                UpdateToCart(MenuID[1], newchkoutQty);
+                CartCountfun('PlusOne');
+            })
+
+            //On click Minus icon and Update in cart
+            $(document).on('click', '.cartminus', function () {
+                var IDVal = $(this).attr("id");
+                var MenuID = IDVal.split('_');
+                var chkoutQty = $('#qty_' + MenuID[1]).text();
+                var newchkoutQty = parseInt(chkoutQty) - parseInt(1);
+                if (newchkoutQty != 0) {
+                    UpdateToCart(MenuID[1], newchkoutQty);
+                }
+                else {
+                    $(this).closest("tr").remove();
+                    PostCheckoutItems();
+                    totalcal();
+                }
+                CartCountfun('MinusOne');
+            })
+
+            //Updated cart if menu already added in cart
+            function UpdateToCart(MenuID, QtyVal) {
+                var Rate = $('#menuprice_' + MenuID).text();
+                var NewTotal = parseFloat(QtyVal, 0) * parseFloat(Rate, 0);
+                $('#qty_' + MenuID).text(QtyVal);
+                $('#menutotal_' + MenuID).text(NewTotal.toFixed(2));
+                PostCheckoutItems();
+                totalcal();
+            }
+            PostCheckoutItems();
+
+            //Change Delivery Type DD
+            var changeDD = function () {
+                var SelectType = $("#delivertype").find('option:selected').val();
+                if (SelectType == "Delivery Schedule") {
+                    $('#SheduleDiv').removeClass("d-none")
+                }
+                else {
+                    $('#SheduleDiv').addClass("d-none")
+                }
+            }
+            $(document).on('change', '#delivertype', changeDD);
+            changeDD();
+
+            //Calculate Distance and Get Delivery Fee
+            function getloc() {
+                var pointA = new google.maps.LatLng('@Model.PartnerLocation.Latitude', '@Model.PartnerLocation.Longitude'),
+                    pointB = new google.maps.LatLng('@Model.DeliverTo.Latitude', '@Model.DeliverTo.Longitude');
+                //alert(pointA);
+                directionsService.route({
+                    origin: pointA,
+                    destination: pointB,
+                    travelMode: 'DRIVING',
+                }, function (response, status) {
+                    if (status === 'OK') {
+                        var leg = response.routes[0].legs[0];
+                        var distance = leg.distance.text;
+                        //alert(distance);
+                        $.ajax({
+                            type: 'GET',
+                            url: "/Customer/GetDeliveryFee",
+                            data: { Dist: distance },
+                            dataType: "json",
+                            success: function (data) {
+                                //alert(data.TotalFee)
+                                $('#deliveryfee').empty().text(data.TotalFee.toFixed(2));
+                                if (data.ISSurcharge && data.BaseDistance < data.TotalDistance) {
+                                    $('#notediv').removeClass('d-none');
+                                }
+                                else {
+                                    $('#notediv').addClass('d-none');
+                                }
+                                totalcal();
+                            }
+                        });
+                    }
+                    });
+            }
+            getloc();
+            //Calculate Total section
+            var totalcal = function () {
+                var SubTotal = 0;
+                var TaxAmt = 0;
+                var DeliveryFee = 0;
+                var GTotal = 0;
+                var rowno = $(".data-row").length;
+                //alert(rowno);
+                $('.data-row').each(function (rowno) {
+                    var indexamt = ($('.index_' + rowno + '').text());
+                    SubTotal += parseFloat(indexamt);
+                });
+                TaxAmt = parseFloat(SubTotal * 5 / 100);
+                DeliveryFee = parseFloat($('#deliveryfee').text());
+                GTotal = parseFloat(SubTotal + TaxAmt + DeliveryFee);
+                ($('#subtotal').text(SubTotal.toFixed(2)));
+                ($('#taxamt').text(TaxAmt.toFixed(2)));
+                ($('#gtotal').text(GTotal.toFixed(2)));
+                ($('#netamtval').val(SubTotal.toFixed(2)));
+                ($('#taxamtval').val(TaxAmt.toFixed(2)));
+                ($('#deliveryfeeval').val(DeliveryFee.toFixed(2)));
+                ($('#totalamtval').val(GTotal.toFixed(2)));
+            }
+        });
+    </script>
+}
+
+

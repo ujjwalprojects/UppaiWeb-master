@@ -1,0 +1,67 @@
+﻿@model UppaiWeb.Areas.MasterConfig.Models.MenuCategoryAdd
+@{
+    ViewBag.Title = "Menu Category";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    string SubHead = "ADD";
+    if (Model.MenuCategory != null)
+    {
+        SubHead = "Edit";
+    }
+}
+
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Menu Category
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/masterconfig/masterconfiguration/Menucategorylist" class="btn btn-danger"> <i class="fa fa-th-list"></i> Menu Category List</a></div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-cogs"></i> Menu Category <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i>@SubHead Menu Category</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        @using (Html.BeginForm("AddMenuCategory", "masterconfiguration", new { @area = "masterconfig" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            if (Model.MenuCategory != null)
+            {
+                @Html.HiddenFor(m => m.MenuCategory.ItemCategoryID);
+            }
+            <div class="col-md-12 mb-3">
+                <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="control-label required">Menu Category Name</label>
+                        @Html.TextBoxFor(m => m.MenuCategory.ItemCategoryName, new { @class = "form-control", @autocomplete = "off", @placeholder = "Enter Menu Category Name" })
+                        @Html.ValidationMessageFor(m => m.MenuCategory.ItemCategoryName)
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="action-div action-style">
+                <a href="/masterconfig/masterconfiguration/Menucategorylist" class="btn btn-secondary btn-user">Back To List</a>
+                <button type="submit" class="btn btn-success btn-user float-right"><i class="fa fa-save"></i> Save</button>
+                <div class="clearfix"></div>
+            </div>
+        }
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

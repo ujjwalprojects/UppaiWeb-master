@@ -1,0 +1,81 @@
+﻿@model UppaiWeb.Areas.MasterConfig.Models.MenuNonAvlAdd
+@{
+    ViewBag.Title = "Menu Non Available";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 0;
+}
+<link href="~/Content/Select2/select2.min.css" rel="stylesheet" />
+<link href="~/Content/cropper/cropper.min.css" rel="stylesheet" />
+<div class="page-title-wrapper">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="fas fa-fw fa-hand-point-right"></i>
+        </div>
+        <div>
+            <div class="page-title-main-text linebreak">
+                Menu Non Available Management
+            </div>
+        </div>
+    </div>
+    <div class="page-title-actions mt-3"> <a href="/masterconfig/menu/menulist" class="btn btn-danger"> <i class="fa fa-th-list"></i> Menu List</a></div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-file-alt"></i> Menu Management <small class="text-secondary text-sm-left"><i class="fas fa-fw fa-caret-right"></i> Add Menu</small></h6>
+    </div>
+    <div class="card-body pb-4">
+        @using (Html.BeginForm("AddNonAvailable", "menu", new { @area = "masterconfig" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="col-md-12 mb-3">
+                <i>Please note all fields marked as <strong class="text-danger">*</strong> are mandatory fields.</i>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="control-label required">Menu Name</label>
+                        @Html.DropDownListFor(m => m.MenuSelect, new SelectList(Model.MenuDDList, "MenuID", "MenuName"), "----Select Menu Name----", new { @class = "form-control ddSelect2", multiple = "" })
+                        @Html.ValidationMessageFor(m => m.MenuSelect)
+                    </div>
+                    <div class="col-md-12 alert alert-secondary">
+                        <strong class="text-center">Menu Non Available Days</strong>
+                        @*<div class="row mt-2">
+                            @foreach (var item in Model.NonAvlDays)
+                            {
+                                <div class="form-group col-md-3">
+                                    @Html.HiddenFor(m => Model.NonAvlDays[i].DayNo)
+                                    @Html.HiddenFor(m => Model.NonAvlDays[i].DayName)
+                                    <label>@Html.CheckBoxFor(m => Model.NonAvlDays[i].IsSelected) @item.DayName</label>
+                                </div>
+                                i++;
+                            }
+                        </div>*@
+                    </div>
+
+
+                </div>
+            </div>
+
+            <hr />
+            <div class="action-div action-style">
+                <a href="/masterconfig/menu/menulist" class="btn btn-secondary btn-user">Back To List</a>
+                <button type="submit" class="btn btn-success btn-user float-right"><i class="fa fa-save"></i> Save</button>
+                <div class="clearfix"></div>
+            </div>
+        }
+    </div>
+</div>
+
+@*error message*@
+<div id="ErrMsg" style="display:none;">
+    <input type="hidden" id="ErrMsgHiddenField" name="ErrMsg" value="@TempData["ErrMsg"]" />
+</div>
+@section Scripts {
+    <script src="~/Content/Select2/select2.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $('.ddSelect2').select2({ width: '100%' });
+    </script>
+
+}
